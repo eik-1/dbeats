@@ -18,9 +18,9 @@ contract DBeatsFactory is Ownable, AccessControl {
         address _initialOwner,
         address _artistAddress,
         string _newTokenURI,
-        uint256 _mintAmount,
         string name,
-        string symbol
+        string symbol,
+        uint256 mintPrice
     );
 
     constructor()  AccessControl() {
@@ -37,9 +37,10 @@ contract DBeatsFactory is Ownable, AccessControl {
         address _initialOwner,
         address _artistAddress,
         string memory _newTokenURI,
-        uint256 _mintAmount,
+        // uint256 _mintAmount,
         string memory name,
-        string memory symbol
+        string memory symbol,
+        uint256 mintPrice
     ) public {
         // Check that the caller has the admin role
         require(hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin");
@@ -49,21 +50,23 @@ contract DBeatsFactory is Ownable, AccessControl {
             _initialOwner,
             _artistAddress,
             _newTokenURI,
-            _mintAmount,
+            // _mintAmount,
             name,
-            symbol
+            symbol,
+            mintPrice
         );
         emit NewNFT(
             address(newNFT),
             _initialOwner,
             _artistAddress,
             _newTokenURI,
-            _mintAmount,
+            // _mintAmount,
             name,
-            symbol
+            symbol,
+            mintPrice
         );
         // Transfer ownership to the artist
-        newNFT.transferOwnership(_artistAddress);
+        // newNFT.transferOwnership(_artistAddress);
         // Store the NFT contract address in the mapping
         nftsByCreator[_artistAddress].push(address(newNFT));
     }

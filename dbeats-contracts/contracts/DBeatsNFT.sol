@@ -10,31 +10,33 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     uint256 private _nextTokenId;
     uint256 private _currentTokenId = 0;
     string public _uri;
-    uint256 _intitalMintAmount;
+    // uint256 _intitalMintAmount;
     address _artistAddress;
+    uint256 public _mintPrice;
 
     constructor(
         address initialOwner,
         address artistAddress,
         string memory _newTokenURI,
-        uint256 _mintAmount,
+        // uint256 _mintAmount,
         string memory _name,
-        string memory _symbol
+        string memory _symbol,
+        uint256 mintPrice
     ) ERC721(_name, _symbol) {
         _uri = _newTokenURI;
-        _intitalMintAmount = _mintAmount;
+        // _intitalMintAmount = _mintAmount;
         _artistAddress = artistAddress;
-        mint(_artistAddress, _intitalMintAmount);
+        _mintPrice = mintPrice;
+        // mint(_artistAddress, _intitalMintAmount);
     }
 
     //batch minting
-    function mint(address to, uint256 quantity) public onlyOwner {
+    function mint(address to, uint256 quantity) public payable {
         require(quantity > 0, "Quantity must be greater than 0");
-        for (uint256 i = 0; i < quantity; i++) {
+        require(msg.value >= quantity * _mintPrice, "Insufficient ETH sent");
             _safeMint(to, _currentTokenId);
             _setTokenURI(_currentTokenId, _uri); // Set the URI for each token
             _currentTokenId++;
-        }
     }
 
     // Override tokenURI to return the _uri directly

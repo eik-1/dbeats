@@ -570,8 +570,8 @@
       ]
     },
     "C:\\Users\\USER\\Desktop\\Side Projects\\Dbeats Project\\dbeats\\dbeats-contracts\\contracts\\Factory.sol": {
-      "lastModificationDate": 1721984090539,
-      "contentHash": "fcdc812be0abca59fb75197fa35b713d",
+      "lastModificationDate": 1722023181443,
+      "contentHash": "652d2a360699fd2acaf05208c7234ee9",
       "sourceName": "contracts/Factory.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -611,8 +611,8 @@
       ]
     },
     "C:\\Users\\USER\\Desktop\\Side Projects\\Dbeats Project\\dbeats\\dbeats-contracts\\contracts\\DBeatsNFT.sol": {
-      "lastModificationDate": 1721984358476,
-      "contentHash": "f0360726f0caf24e2ca23ac9fd8878a2",
+      "lastModificationDate": 1722022165849,
+      "contentHash": "ec8a9dd241594637459b963d75e92241",
       "sourceName": "contracts/DBeatsNFT.sol",
       "solcConfig": {
         "version": "0.8.24",
