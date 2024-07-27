@@ -49,6 +49,7 @@ contract DBeatsFactory is Ownable, AccessControl {
         require(hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin");
 
         tokenCounter++;
+        
         DBeatsNFT newNFT = new DBeatsNFT(
             // _admin,
             _royaltyFeePercentage,

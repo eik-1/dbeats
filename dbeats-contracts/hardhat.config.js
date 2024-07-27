@@ -34,4 +34,5 @@ module.exports = {
     L2: "arbitrum",
     // coinmarketcap: "abc123...",
   }
+  
 };

@@ -18,6 +18,7 @@ async function main() {
     const content = "module.exports = " + JSON.stringify(details, null, 2) + ";";
     fs.writeFileSync("./ContractDetails.js", content);
 }
+
 // Execute the main function
 main()
   .then(() => process.exit(0)) // Exit with success status

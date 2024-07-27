@@ -115,6 +115,7 @@ describe("DBeatsFactory", function () {
         10,
         royaltyFeePercent
       );
+      
       const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address,0)
       const NFTcontract = await ethers.getContractAt("DBeatsNFT", newNftAddress);
       const listedMintPrice = await NFTcontract._mintPrice();

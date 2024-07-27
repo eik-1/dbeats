@@ -22,6 +22,7 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         require(msg.sender == _platformWalletAddress, "Only platform admin wallet can call this function");
         _;
     }
+    
 
     constructor(
         uint256 royaltyFeePercentage,
