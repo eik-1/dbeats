@@ -19,9 +19,10 @@ describe("DBeatsFactory", function () {
     // Deploy the contract
     dBeatsFactory = await DBeatsFactory.deploy(platformWalletAddress);
     // console.log("DBeats Factory deployed to :", dBeatsFactory.target);
-
     
   });
+
+  
 
   describe("Deployment", function () {
     it("Should set the right owner", async function () {
@@ -44,19 +45,19 @@ describe("DBeatsFactory", function () {
 
   describe("Create NFT", function () {
 
-
+    beforeEach(async function () {
+      await dBeatsFactory.addUserToRole(Admin_role, addr1.address);
+    });
 
     it("Should create new NFT contract", async function () {
-      // add addr1 as and adim role to be able to create a new NFT
-      await dBeatsFactory.addUserToRole(Admin_role,addr1.address);
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
+      const mintPrice = 1000000
       await aurthorisedAdminUser.createNFT(
-        // admin.address,
         addr1.address,
         "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
         "DBeats",
         "DBT",
-        1,
+        mintPrice,
         10,
         royaltyFeePercent
       );
@@ -66,14 +67,14 @@ describe("DBeatsFactory", function () {
     });
 
     it("Should set the platform wallet address", async function () {
-      await dBeatsFactory.addUserToRole(Admin_role,addr1.address);
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
+      const mintPrice = 1000000
       await aurthorisedAdminUser.createNFT(
         addr1.address,
         "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
         "DBeats",
         "DBT",
-        1,
+        mintPrice,
         10,
         royaltyFeePercent
       );
@@ -83,15 +84,14 @@ describe("DBeatsFactory", function () {
     });
 
     it("New NFT Contract should be owned by the factory contract", async function () {
-      await dBeatsFactory.addUserToRole(Admin_role,addr1.address);
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
+      const mintPrice = 1000000
       await aurthorisedAdminUser.createNFT(
-        // admin.address,
         addr1.address,
         "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
         "DBeats",
         "DBT",
-        1,
+        mintPrice,
         10,
         royaltyFeePercent
       );
@@ -103,10 +103,8 @@ describe("DBeatsFactory", function () {
 
     it("Should check mint price is set", async function () {
       const mintPrice = 1000000
-      await dBeatsFactory.addUserToRole(Admin_role,addr1.address);
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
       await aurthorisedAdminUser.createNFT(
-        // admin.address,
         addr1.address,
         "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
         "DBeats",
@@ -115,7 +113,7 @@ describe("DBeatsFactory", function () {
         10,
         royaltyFeePercent
       );
-      
+
       const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address,0)
       const NFTcontract = await ethers.getContractAt("DBeatsNFT", newNftAddress);
       const listedMintPrice = await NFTcontract._mintPrice();
@@ -124,10 +122,8 @@ describe("DBeatsFactory", function () {
 
     it("Should mint new NFT to a new user", async function () {
       const mintPrice = 1000000
-      await dBeatsFactory.addUserToRole(Admin_role,addr1.address);
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
       await aurthorisedAdminUser.createNFT(
-        // admin.address,
         addr1.address,
         "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
         "DBeats",
@@ -142,6 +138,72 @@ describe("DBeatsFactory", function () {
       await connectUserToContract.mint(addr2.address, 1, { value: mintPrice });
       expect(await NFTcontract.balanceOf(addr2.address)).to.equal(1);
     });
-  });
 
+    it("Should return the balance of the NFT contract after minting", async function () {
+    
+      const mintPrice = 1000000
+      const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
+      await aurthorisedAdminUser.createNFT(
+        addr1.address,
+        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
+        "DBeats",
+        "DBT",
+        mintPrice,
+        10,
+        royaltyFeePercent
+      );
+      const endBalance = mintPrice - (royaltyFeePercent * mintPrice) / 100
+      const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address,0)
+      const NFTcontract = await ethers.getContractAt("DBeatsNFT", newNftAddress);
+      const connectUserToContract = NFTcontract.connect(addr2);
+      await connectUserToContract.mint(addr2.address, 1, { value: mintPrice });
+      const contractBalance = await ethers.provider.getBalance(newNftAddress);
+      expect(await ethers.provider.getBalance(newNftAddress)).to.equal(endBalance);
+    });
+
+    it("should withdraw the balance to artist address from the NFT contract", async function () {
+    
+      const mintPrice = 1000000
+      const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
+      await aurthorisedAdminUser.createNFT(
+        addr1.address,
+        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
+        "DBeats",
+        "DBT",
+        mintPrice,
+        10,
+        royaltyFeePercent
+      );
+      const endBalance = mintPrice - (royaltyFeePercent * mintPrice) / 100
+      const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address,0)
+      const NFTcontract = await ethers.getContractAt("DBeatsNFT", newNftAddress);
+      const connectUserToContract = NFTcontract.connect(addr2);
+      await connectUserToContract.mint(addr2.address, 1, { value: mintPrice });
+      const connectArtistToContract = NFTcontract.connect(addr1);
+      await connectArtistToContract.withdraw();
+      expect(await ethers.provider.getBalance(newNftAddress)).to.equal(0);
+    });
+
+    it("should not allow non artist to withdraw the balance from an NFT contract", async function () {
+      const mintPrice = 1000000;
+      const authorizedAdminUser = dBeatsFactory.connect(addr1);
+      await authorizedAdminUser.createNFT(
+        addr1.address,
+        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
+        "DBeats",
+        "DBT",
+        mintPrice,
+        10,
+        royaltyFeePercent
+      );
+    
+      const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address, 0);
+      const NFTcontract = await ethers.getContractAt("DBeatsNFT", newNftAddress);
+      const connectUserToContract = NFTcontract.connect(addr2);
+      await connectUserToContract.mint(addr2.address, 1, { value: mintPrice });
+      await expect(connectUserToContract.withdraw()).to.be.revertedWith("Only artist can call this function");
+    });
+    
+
+  });
 });

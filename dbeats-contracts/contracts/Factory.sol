@@ -4,10 +4,12 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 import "./DBeatsNFT.sol";
 
 contract DBeatsFactory is Ownable, AccessControl {
-    uint256 public tokenCounter;
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenCounter;
     address public platformWalletAddress;
     mapping(address => address[]) public nftsByCreator;
 
@@ -16,7 +18,7 @@ contract DBeatsFactory is Ownable, AccessControl {
 
     event NewNFT(
         address indexed nftAddress,
-         uint256 _royaltyFeePercentage,
+        uint256 _royaltyFeePercentage,
         address _artistAddress,
         string _newTokenURI,
         string name,
@@ -24,7 +26,7 @@ contract DBeatsFactory is Ownable, AccessControl {
         uint256 mintPrice
     );
 
-    constructor(address _platformWalletAddress)  AccessControl() {
+    constructor(address _platformWalletAddress) AccessControl() {
         // Grant the admin role to the contract deployer
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         platformWalletAddress = _platformWalletAddress;
@@ -48,7 +50,7 @@ contract DBeatsFactory is Ownable, AccessControl {
         // Check that the caller has the admin role
         require(hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin");
 
-        tokenCounter++;
+        _tokenCounter.increment();
         
         DBeatsNFT newNFT = new DBeatsNFT(
             // _admin,
@@ -78,5 +80,10 @@ contract DBeatsFactory is Ownable, AccessControl {
     // Function to get NFTs created by a specific address
     function getNFTsByCreator(address creator) public view returns (address[] memory) {
         return nftsByCreator[creator];
+    }
+
+    // Function to get the current token count
+    function getTokenCount() public view returns (uint256) {
+        return _tokenCounter.current();
     }
 }

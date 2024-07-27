@@ -4,10 +4,12 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIdCounter;
 
-    uint256 private _currentTokenId = 0;
     uint256 public _mintPrice;
     uint256 private _platformFeePercentage;
     uint256 public _royaltyFeePercentage;
@@ -22,7 +24,11 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         require(msg.sender == _platformWalletAddress, "Only platform admin wallet can call this function");
         _;
     }
-    
+
+    modifier onlyArtist() {
+        require(msg.sender == _artistAddress, "Only artist can call this function");
+        _;
+    }
 
     constructor(
         uint256 royaltyFeePercentage,
@@ -48,10 +54,11 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         uint256 fee = (msg.value * _platformFeePercentage) / 100;
         payable(_platformWalletAddress).transfer(fee);
         for (uint256 i = 0; i < quantity; i++) {
-            _safeMint(to, _currentTokenId);
-            emit Minted(to, _currentTokenId, tokenURI(_currentTokenId));
-            _setTokenURI(_currentTokenId, _uri);
-            _currentTokenId++;
+            _tokenIdCounter.increment();
+            uint256 tokenId = _tokenIdCounter.current();
+            _safeMint(to, tokenId);
+            emit Minted(to, tokenId, tokenURI(tokenId));
+            _setTokenURI(tokenId, _uri);
         }
     }
 
@@ -59,7 +66,7 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         _platformFeePercentage = _newPlatformFeePercent;
     }
 
-    function withdraw() public onlyOwner {
+    function withdraw() public onlyArtist {
         require(msg.sender == _artistAddress, "Only the artist can withdraw");
         payable(msg.sender).transfer(address(this).balance);
     }
