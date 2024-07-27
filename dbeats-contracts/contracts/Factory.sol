@@ -8,6 +8,7 @@ import "./DBeatsNFT.sol";
 
 contract DBeatsFactory is Ownable, AccessControl {
     uint256 public tokenCounter;
+    address public platformWalletAddress;
     mapping(address => address[]) public nftsByCreator;
 
     // Define a new role identifier for the admin role
@@ -15,7 +16,7 @@ contract DBeatsFactory is Ownable, AccessControl {
 
     event NewNFT(
         address indexed nftAddress,
-        address _initialOwner,
+         uint256 _royaltyFeePercentage,
         address _artistAddress,
         string _newTokenURI,
         string name,
@@ -23,7 +24,7 @@ contract DBeatsFactory is Ownable, AccessControl {
         uint256 mintPrice
     );
 
-    constructor()  AccessControl() {
+    constructor(address platformWalletAddress)  AccessControl() {
         // Grant the admin role to the contract deployer
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
@@ -34,40 +35,41 @@ contract DBeatsFactory is Ownable, AccessControl {
     }
 
     function createNFT(
-        address _initialOwner,
+        address _admin,
         address _artistAddress,
         string memory _newTokenURI,
-        // uint256 _mintAmount,
         string memory name,
         string memory symbol,
-        uint256 mintPrice
+        uint256 mintPrice,
+        uint256 _platformFeePercentage,
+        uint256 _royaltyFeePercentage
     ) public {
         // Check that the caller has the admin role
         require(hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin");
 
         tokenCounter++;
         DBeatsNFT newNFT = new DBeatsNFT(
-            _initialOwner,
+            _admin,
+            _royaltyFeePercentage,
             _artistAddress,
             _newTokenURI,
-            // _mintAmount,
             name,
             symbol,
-            mintPrice
+            mintPrice,
+            _platformFeePercentage,
+            platformWalletAddress
         );
+    
         emit NewNFT(
             address(newNFT),
-            _initialOwner,
+            _royaltyFeePercentage,
             _artistAddress,
             _newTokenURI,
-            // _mintAmount,
             name,
             symbol,
             mintPrice
         );
-        // Transfer ownership to the artist
-        // newNFT.transferOwnership(_artistAddress);
-        // Store the NFT contract address in the mapping
+
         nftsByCreator[_artistAddress].push(address(newNFT));
     }
 
