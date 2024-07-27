@@ -24,9 +24,10 @@ contract DBeatsFactory is Ownable, AccessControl {
         uint256 mintPrice
     );
 
-    constructor(address platformWalletAddress)  AccessControl() {
+    constructor(address _platformWalletAddress)  AccessControl() {
         // Grant the admin role to the contract deployer
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        platformWalletAddress = _platformWalletAddress;
     }
 
     // Function to add a user to a specific role
@@ -35,7 +36,7 @@ contract DBeatsFactory is Ownable, AccessControl {
     }
 
     function createNFT(
-        address _admin,
+        // address _admin,
         address _artistAddress,
         string memory _newTokenURI,
         string memory name,
@@ -49,7 +50,7 @@ contract DBeatsFactory is Ownable, AccessControl {
 
         tokenCounter++;
         DBeatsNFT newNFT = new DBeatsNFT(
-            _admin,
+            // _admin,
             _royaltyFeePercentage,
             _artistAddress,
             _newTokenURI,

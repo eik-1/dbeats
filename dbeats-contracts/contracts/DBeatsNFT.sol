@@ -13,14 +13,17 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     uint256 public _royaltyFeePercentage;
     string public _uri;
     address public _artistAddress;
-    address public _adminAddress;
-    address private _platformWalletAddress;
+    address public _platformWalletAddress; //can set to private
 
     event RoyaltyPaid(address indexed artist, address indexed buyer, uint256 amount);
     event Minted(address indexed to, uint256 indexed tokenId, string uri);
 
+    modifier onlyAdmin() {
+        require(msg.sender == _platformWalletAddress, "Only platform admin wallet can call this function");
+        _;
+    }
+
     constructor(
-        address adminAddress,
         uint256 royaltyFeePercentage,
         address artistAddress,
         string memory _newTokenURI,
@@ -31,7 +34,6 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         address platformWalletAddress
     ) ERC721(_name, _symbol) {
         _uri = _newTokenURI;
-        _adminAddress = adminAddress;
         _artistAddress = artistAddress;
         _mintPrice = mintPrice;
         _platformFeePercentage = platformFeePercentage;
@@ -52,11 +54,11 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         }
     }
 
-    function updatePlatformFee(uint256 _newPlatformFeePercent) external onlyOwner {
+    function updatePlatformFee(uint256 _newPlatformFeePercent) external onlyAdmin {
         _platformFeePercentage = _newPlatformFeePercent;
     }
 
-    function withdraw() public {
+    function withdraw() public onlyOwner {
         require(msg.sender == _artistAddress, "Only the artist can withdraw");
         payable(msg.sender).transfer(address(this).balance);
     }

@@ -36,9 +36,13 @@ describe("DBeatsFactory", function () {
       await dBeatsFactory.addUserToRole(Admin_role, addr1.address);
       expect(await dBeatsFactory.hasRole(Admin_role, addr1.address)).to.equal(true);
     });
+
+    it("Should set platform wallet address", async function () {
+      expect(await dBeatsFactory.platformWalletAddress()).to.equal(platformWalletAddress);
+    });
   });
 
-  describe("Should create and mint NFT", function () {
+  describe("Create NFT", function () {
 
 
 
@@ -47,7 +51,24 @@ describe("DBeatsFactory", function () {
       await dBeatsFactory.addUserToRole(Admin_role,addr1.address);
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
       await aurthorisedAdminUser.createNFT(
-        admin.address,
+        // admin.address,
+        addr1.address,
+        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
+        "DBeats",
+        "DBT",
+        1,
+        10,
+        royaltyFeePercent
+      );
+    
+      const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address,0)  
+      expect(await dBeatsFactory.nftsByCreator(addr1.address,0)).to.equal(newNftAddress);
+    });
+
+    it("Should set the platform wallet address", async function () {
+      await dBeatsFactory.addUserToRole(Admin_role,addr1.address);
+      const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
+      await aurthorisedAdminUser.createNFT(
         addr1.address,
         "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
         "DBeats",
@@ -57,14 +78,15 @@ describe("DBeatsFactory", function () {
         royaltyFeePercent
       );
       const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address,0)
-      expect(await dBeatsFactory.nftsByCreator(addr1.address,0)).to.equal(newNftAddress);
+      const NFTcontract = await ethers.getContractAt("DBeatsNFT", newNftAddress);  
+      expect(await NFTcontract._platformWalletAddress()).to.equal(platformWalletAddress);
     });
 
     it("New NFT Contract should be owned by the factory contract", async function () {
       await dBeatsFactory.addUserToRole(Admin_role,addr1.address);
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
       await aurthorisedAdminUser.createNFT(
-        admin.address,
+        // admin.address,
         addr1.address,
         "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
         "DBeats",
@@ -84,7 +106,7 @@ describe("DBeatsFactory", function () {
       await dBeatsFactory.addUserToRole(Admin_role,addr1.address);
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
       await aurthorisedAdminUser.createNFT(
-        admin.address,
+        // admin.address,
         addr1.address,
         "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
         "DBeats",
@@ -104,7 +126,7 @@ describe("DBeatsFactory", function () {
       await dBeatsFactory.addUserToRole(Admin_role,addr1.address);
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
       await aurthorisedAdminUser.createNFT(
-        admin.address,
+        // admin.address,
         addr1.address,
         "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
         "DBeats",
