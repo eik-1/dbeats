@@ -53,13 +53,14 @@ describe("DBeatsFactory", function () {
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
       const mintPrice = 1000000
       await aurthorisedAdminUser.createNFT(
-        addr1.address,
-        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
-        "DBeats",
-        "DBT",
-        mintPrice,
-        10,
-        royaltyFeePercent
+        addr1.address, //Artist Adderss
+        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",//newTokenUri
+        "DBeats",//name
+        "DBT",//symbol
+        mintPrice,//minprice
+        10,//platformPercentageFee
+        royaltyFeePercent,// royaltyFeePercentage
+        "pop", //genre
       );
     
       const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address,0)  
@@ -70,13 +71,14 @@ describe("DBeatsFactory", function () {
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
       const mintPrice = 1000000
       await aurthorisedAdminUser.createNFT(
-        addr1.address,
-        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
-        "DBeats",
-        "DBT",
-        mintPrice,
-        10,
-        royaltyFeePercent
+        addr1.address, //Artist Adderss
+        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",//newTokenUri
+        "DBeats",//name
+        "DBT",//symbol
+        mintPrice,//minprice
+        10,//platformPercentageFee
+        royaltyFeePercent,// royaltyFeePercentage
+        "pop", //genre
       );
       const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address,0)
       const NFTcontract = await ethers.getContractAt("DBeatsNFT", newNftAddress);  
@@ -87,13 +89,14 @@ describe("DBeatsFactory", function () {
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
       const mintPrice = 1000000
       await aurthorisedAdminUser.createNFT(
-        addr1.address,
-        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
-        "DBeats",
-        "DBT",
-        mintPrice,
-        10,
-        royaltyFeePercent
+        addr1.address, //Artist Adderss
+        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",//newTokenUri
+        "DBeats",//name
+        "DBT",//symbol
+        mintPrice,//minprice
+        10,//platformPercentageFee
+        royaltyFeePercent,// royaltyFeePercentage
+        "pop", //genre
       );
       const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address,0)
       const NFTcontract = await ethers.getContractAt("DBeatsNFT", newNftAddress);
@@ -105,13 +108,14 @@ describe("DBeatsFactory", function () {
       const mintPrice = 1000000
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
       await aurthorisedAdminUser.createNFT(
-        addr1.address,
-        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
-        "DBeats",
-        "DBT",
-        mintPrice,
-        10,
-        royaltyFeePercent
+        addr1.address, //Artist Adderss
+        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",//newTokenUri
+        "DBeats",//name
+        "DBT",//symbol
+        mintPrice,//minprice
+        10,//platformPercentageFee
+        royaltyFeePercent,// royaltyFeePercentage
+        "pop", //genre
       );
 
       const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address,0)
@@ -124,13 +128,14 @@ describe("DBeatsFactory", function () {
       const mintPrice = 1000000
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
       await aurthorisedAdminUser.createNFT(
-        addr1.address,
-        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
-        "DBeats",
-        "DBT",
-        mintPrice,
-        10,
-        royaltyFeePercent
+        addr1.address, //Artist Adderss
+        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",//newTokenUri
+        "DBeats",//name
+        "DBT",//symbol
+        mintPrice,//minprice
+        10,//platformPercentageFee
+        royaltyFeePercent,// royaltyFeePercentage
+        "pop", //genre
       );
       const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address,0)
       const NFTcontract = await ethers.getContractAt("DBeatsNFT", newNftAddress);
@@ -144,13 +149,14 @@ describe("DBeatsFactory", function () {
       const mintPrice = 1000000
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
       await aurthorisedAdminUser.createNFT(
-        addr1.address,
-        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
-        "DBeats",
-        "DBT",
-        mintPrice,
-        10,
-        royaltyFeePercent
+        addr1.address, //Artist Adderss
+        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",//newTokenUri
+        "DBeats",//name
+        "DBT",//symbol
+        mintPrice,//minprice
+        10,//platformPercentageFee
+        royaltyFeePercent,// royaltyFeePercentage
+        "pop", //genre
       );
       const endBalance = mintPrice - (royaltyFeePercent * mintPrice) / 100
       const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address,0)
@@ -166,13 +172,14 @@ describe("DBeatsFactory", function () {
       const mintPrice = 1000000
       const aurthorisedAdminUser = dBeatsFactory.connect(addr1);
       await aurthorisedAdminUser.createNFT(
-        addr1.address,
-        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
-        "DBeats",
-        "DBT",
-        mintPrice,
-        10,
-        royaltyFeePercent
+        addr1.address, //Artist Adderss
+        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",//newTokenUri
+        "DBeats",//name
+        "DBT",//symbol
+        mintPrice,//minprice
+        10,//platformPercentageFee
+        royaltyFeePercent,// royaltyFeePercentage
+        "pop", //genre
       );
       const endBalance = mintPrice - (royaltyFeePercent * mintPrice) / 100
       const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address,0)
@@ -188,13 +195,14 @@ describe("DBeatsFactory", function () {
       const mintPrice = 1000000;
       const authorizedAdminUser = dBeatsFactory.connect(addr1);
       await authorizedAdminUser.createNFT(
-        addr1.address,
-        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",
-        "DBeats",
-        "DBT",
-        mintPrice,
-        10,
-        royaltyFeePercent
+        addr1.address, //Artist Adderss
+        "https://ipfs.io/ipfs/QmYhXxj8Xg2qjW8q6b8vLbZgA7UjF9sWn6yM7a5WqYwF6",//newTokenUri
+        "DBeats",//name
+        "DBT",//symbol
+        mintPrice,//minprice
+        10,//platformPercentageFee
+        royaltyFeePercent,// royaltyFeePercentage
+        "pop", //genre
       );
     
       const newNftAddress = await dBeatsFactory.nftsByCreator(addr1.address, 0);

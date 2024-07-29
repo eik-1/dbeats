@@ -16,6 +16,7 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     string public _uri;
     address public _artistAddress;
     address public _platformWalletAddress; //can set to private
+    string public _genre;
 
     event RoyaltyPaid(address indexed artist, address indexed buyer, uint256 amount);
     event Minted(address indexed to, uint256 indexed tokenId, string uri);
@@ -38,7 +39,8 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         string memory _symbol,
         uint256 mintPrice,
         uint256 platformFeePercentage,
-        address platformWalletAddress
+        address platformWalletAddress,
+        string memory  genre
     ) ERC721(_name, _symbol) {
         _uri = _newTokenURI;
         _artistAddress = artistAddress;
@@ -46,6 +48,7 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         _platformFeePercentage = platformFeePercentage;
         _platformWalletAddress = platformWalletAddress;
         _royaltyFeePercentage = royaltyFeePercentage;
+        _genre = genre;
     }
 
     function mint(address to, uint256 quantity) public payable {

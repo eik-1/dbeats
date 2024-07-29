@@ -1,3 +1,3 @@
 module.exports = {
-  "factory": "0xB2d595ee125645f8e49e8Aa5b9bf4DFCC7fbe5dF"
+  "factory": "0x0f3f556Bc2C61B12FF48e23ab2e74268dc9d662A"
 };

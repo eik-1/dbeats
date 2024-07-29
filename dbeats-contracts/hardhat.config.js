@@ -31,7 +31,7 @@ module.exports = {
   gasReporter: {
     enabled: false,
     currency: 'ETH',
-    L2: "arbitrum",
+    L2: "ethereum",
     L2Etherscan: process.env.ARB_API_KEY,
     gasPrice: 21,
     coinmarketcap: process.env.COINMARKETCAP_API,

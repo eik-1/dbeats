@@ -16,6 +16,21 @@ contract DBeatsFactory is Ownable, AccessControl {
     // Define a new role identifier for the admin role
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
 
+    // Define a struct to store NFT data
+    struct NFTData {
+        address nftAddress;
+        uint256 royaltyFeePercentage;
+        address artistAddress;
+        string tokenURI;
+        string name;
+        string symbol;
+        uint256 mintPrice;
+        string genre;
+    }
+
+    // Mapping from creator address to an array of NFTData
+    mapping(address => NFTData[]) public nftDataByCreator;
+
     event NewNFT(
         address indexed nftAddress,
         uint256 _royaltyFeePercentage,
@@ -23,7 +38,8 @@ contract DBeatsFactory is Ownable, AccessControl {
         string _newTokenURI,
         string name,
         string symbol,
-        uint256 mintPrice
+        uint256 mintPrice,
+        string genre
     );
 
     constructor(address _platformWalletAddress) AccessControl() {
@@ -45,7 +61,8 @@ contract DBeatsFactory is Ownable, AccessControl {
         string memory symbol,
         uint256 mintPrice,
         uint256 _platformFeePercentage,
-        uint256 _royaltyFeePercentage
+        uint256 _royaltyFeePercentage,
+        string memory _genre
     ) public {
         // Check that the caller has the admin role
         require(hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin");
@@ -61,7 +78,8 @@ contract DBeatsFactory is Ownable, AccessControl {
             symbol,
             mintPrice,
             _platformFeePercentage,
-            platformWalletAddress
+            platformWalletAddress,
+            _genre
         );
     
         emit NewNFT(
@@ -71,15 +89,35 @@ contract DBeatsFactory is Ownable, AccessControl {
             _newTokenURI,
             name,
             symbol,
-            mintPrice
+            mintPrice,
+            _genre
         );
 
         nftsByCreator[_artistAddress].push(address(newNFT));
+
+        // Store the NFT data in the mapping
+        NFTData memory newNFTData = NFTData({
+            nftAddress: address(newNFT),
+            royaltyFeePercentage: _royaltyFeePercentage,
+            artistAddress: _artistAddress,
+            tokenURI: _newTokenURI,
+            name: name,
+            symbol: symbol,
+            mintPrice: mintPrice,
+            genre: _genre
+        });
+
+        nftDataByCreator[_artistAddress].push(newNFTData);
     }
 
     // Function to get NFTs created by a specific address
     function getNFTsByCreator(address creator) public view returns (address[] memory) {
         return nftsByCreator[creator];
+    }
+
+    // Function to get NFT data created by a specific address
+    function getNFTDataByCreator(address creator) public view returns (NFTData[] memory) {
+        return nftDataByCreator[creator];
     }
 
     // Function to get the current token count
