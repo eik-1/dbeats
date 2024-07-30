@@ -10,14 +10,11 @@ contract D_Beats_Artist is ERC721, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
-    
+
     event Attest(address indexed to, uint256 indexed tokenId);
     event Revoke(address indexed to, uint256 indexed tokenId);
 
-
-    constructor() ERC721("D-Beats-Artist", "DBA") {
-
-    }
+    constructor() ERC721("D-Beats-Artist", "DBA") {}
 
     function safeMint(address to, string memory uri) public onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();
@@ -27,7 +24,10 @@ contract D_Beats_Artist is ERC721, ERC721URIStorage, Ownable {
     }
 
     function burn(uint256 tokenId) external {
-        require(ownerOf(tokenId) == msg.sender, "Only owner of the token can burn it");
+        require(
+            ownerOf(tokenId) == msg.sender,
+            "Only owner of the token can burn it"
+        );
         _burn(tokenId);
     }
 
@@ -35,12 +35,22 @@ contract D_Beats_Artist is ERC721, ERC721URIStorage, Ownable {
         _burn(tokenId);
     }
 
-    function _beforeTokenTransfer(address from, address to, uint256) pure override internal {
-        require(from == address(0) || to == address(0), "Not allowed to transfer token");
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256
+    ) internal pure override {
+        require(
+            from == address(0) || to == address(0),
+            "Not allowed to transfer token"
+        );
     }
 
-    function _afterTokenTransfer(address from, address to, uint256 tokenId) override internal {
-
+    function _afterTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal override {
         if (from == address(0)) {
             emit Attest(to, tokenId);
         } else if (to == address(0)) {
@@ -48,16 +58,15 @@ contract D_Beats_Artist is ERC721, ERC721URIStorage, Ownable {
         }
     }
 
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+    function _burn(
+        uint256 tokenId
+    ) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
     }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override(ERC721, ERC721URIStorage)
-        returns (string memory)
-    {
+    function tokenURI(
+        uint256 tokenId
+    ) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }
 }

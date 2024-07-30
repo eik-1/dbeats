@@ -3,11 +3,12 @@ require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-ethers");
 require("hardhat-gas-reporter");
 require("dotenv").config();
+
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   networks: {
     hardhat: {
-      allowUnlimitedContractSize: true
+      allowUnlimitedContractSize: true,
     },
     arbitrum: {
       allowUnlimitedContractSize: true,
@@ -30,11 +31,10 @@ module.exports = {
   },
   gasReporter: {
     enabled: false,
-    currency: 'ETH',
+    currency: "ETH",
     L2: "arbitrum",
     L2Etherscan: process.env.ARB_API_KEY,
     gasPrice: 21,
     coinmarketcap: process.env.COINMARKETCAP_API,
-  }
-  
+  },
 };

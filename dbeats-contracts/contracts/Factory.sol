@@ -6,11 +6,13 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./DBeatsNFT.sol";
+import "./ArtistNFT.sol";
 
 contract DBeatsFactory is Ownable, AccessControl {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenCounter;
     address public platformWalletAddress;
+
     mapping(address => address[]) public nftsByCreator;
 
     // Define a new role identifier for the admin role
@@ -51,7 +53,7 @@ contract DBeatsFactory is Ownable, AccessControl {
         require(hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin");
 
         _tokenCounter.increment();
-        
+
         DBeatsNFT newNFT = new DBeatsNFT(
             // _admin,
             _royaltyFeePercentage,
@@ -63,7 +65,7 @@ contract DBeatsFactory is Ownable, AccessControl {
             _platformFeePercentage,
             platformWalletAddress
         );
-    
+
         emit NewNFT(
             address(newNFT),
             _royaltyFeePercentage,
@@ -78,7 +80,9 @@ contract DBeatsFactory is Ownable, AccessControl {
     }
 
     // Function to get NFTs created by a specific address
-    function getNFTsByCreator(address creator) public view returns (address[] memory) {
+    function getNFTsByCreator(
+        address creator
+    ) public view returns (address[] memory) {
         return nftsByCreator[creator];
     }
 

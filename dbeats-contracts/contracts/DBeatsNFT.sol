@@ -17,16 +17,26 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     address public _artistAddress;
     address public _platformWalletAddress; //can set to private
 
-    event RoyaltyPaid(address indexed artist, address indexed buyer, uint256 amount);
+    event RoyaltyPaid(
+        address indexed artist,
+        address indexed buyer,
+        uint256 amount
+    );
     event Minted(address indexed to, uint256 indexed tokenId, string uri);
 
     modifier onlyAdmin() {
-        require(msg.sender == _platformWalletAddress, "Only platform admin wallet can call this function");
+        require(
+            msg.sender == _platformWalletAddress,
+            "Only platform admin wallet can call this function"
+        );
         _;
     }
 
     modifier onlyArtist() {
-        require(msg.sender == _artistAddress, "Only artist can call this function");
+        require(
+            msg.sender == _artistAddress,
+            "Only artist can call this function"
+        );
         _;
     }
 
@@ -62,7 +72,9 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         }
     }
 
-    function updatePlatformFee(uint256 _newPlatformFeePercent) external onlyAdmin {
+    function updatePlatformFee(
+        uint256 _newPlatformFeePercent
+    ) external onlyAdmin {
         _platformFeePercentage = _newPlatformFeePercent;
     }
 
@@ -71,7 +83,9 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         payable(msg.sender).transfer(address(this).balance);
     }
 
-    function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
+    function tokenURI(
+        uint256 tokenId
+    ) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return _uri;
     }
 
@@ -79,11 +93,17 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         return _uri;
     }
 
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+    function _burn(
+        uint256 tokenId
+    ) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
     }
 
-    function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal override(ERC721) {
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal override(ERC721) {
         if (from != address(0) && to != address(0)) {
             uint256 royaltyAmount = (msg.value * _royaltyFeePercentage) / 100;
             payable(_artistAddress).transfer(royaltyAmount);

@@ -1,6 +1,6 @@
 {
 	"dependencies": {
-		"@openzeppelin/contracts": "^4.7.0",
+		"@openzeppelin/contracts": "4.9.6",
 		"dotenv": "^16.4.5",
 		"hardhat": "^2.22.6"
 	},
@@ -16,7 +16,8 @@
 		"@typechain/hardhat": "^9.0.0",
 		"chai": "^4.2.0",
 		"ethers": "^6.4.0",
-		"hardhat-gas-reporter": "^1.0.10",
+		"hardhat-gas-reporter": "^1.0.8",
+		"prettier": "^3.3.3",
 		"solidity-coverage": "^0.8.0",
 		"typechain": "^8.3.0"
 	}
