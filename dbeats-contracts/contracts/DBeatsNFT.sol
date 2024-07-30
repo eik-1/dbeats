@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
+import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/utils/Counters.sol';
 
 contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
@@ -27,7 +27,7 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     modifier onlyAdmin() {
         require(
             msg.sender == _platformWalletAddress,
-            "Only platform admin wallet can call this function"
+            'Only platform admin wallet can call this function'
         );
         _;
     }
@@ -35,7 +35,7 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     modifier onlyArtist() {
         require(
             msg.sender == _artistAddress,
-            "Only artist can call this function"
+            'Only artist can call this function'
         );
         _;
     }
@@ -59,8 +59,8 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     }
 
     function mint(address to, uint256 quantity) public payable {
-        require(quantity > 0, "Quantity must be greater than 0");
-        require(msg.value >= quantity * _mintPrice, "Insufficient ETH sent");
+        require(quantity > 0, 'Quantity must be greater than 0');
+        require(msg.value >= quantity * _mintPrice, 'Insufficient ETH sent');
         uint256 fee = (msg.value * _platformFeePercentage) / 100;
         payable(_platformWalletAddress).transfer(fee);
         for (uint256 i = 0; i < quantity; i++) {
@@ -79,7 +79,7 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     }
 
     function withdraw() public onlyArtist {
-        require(msg.sender == _artistAddress, "Only the artist can withdraw");
+        require(msg.sender == _artistAddress, 'Only the artist can withdraw');
         payable(msg.sender).transfer(address(this).balance);
     }
 

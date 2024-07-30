@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "./DBeatsNFT.sol";
-import "./ArtistNFT.sol";
+import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/access/AccessControl.sol';
+import '@openzeppelin/contracts/utils/Counters.sol';
+import './DBeatsNFT.sol';
+import './ArtistNFT.sol';
 
 contract DBeatsFactory is Ownable, AccessControl {
     using Counters for Counters.Counter;
@@ -16,7 +16,7 @@ contract DBeatsFactory is Ownable, AccessControl {
     mapping(address => address[]) public nftsByCreator;
 
     // Define a new role identifier for the admin role
-    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 public constant ADMIN_ROLE = keccak256('ADMIN_ROLE');
 
     event NewNFT(
         address indexed nftAddress,
@@ -50,7 +50,7 @@ contract DBeatsFactory is Ownable, AccessControl {
         uint256 _royaltyFeePercentage
     ) public {
         // Check that the caller has the admin role
-        require(hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin");
+        require(hasRole(ADMIN_ROLE, msg.sender), 'Caller is not an admin');
 
         _tokenCounter.increment();
 
