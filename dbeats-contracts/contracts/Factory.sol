@@ -10,13 +10,18 @@ import './ArtistNFT.sol';
 
 contract DBeatsFactory is Ownable, AccessControl {
     using Counters for Counters.Counter;
+
     Counters.Counter private _tokenCounter;
+    Counters.Counter private _artistCounter;
     address public platformWalletAddress;
+    ArtistNFT public artistNFTContract;
 
     mapping(address => address[]) public nftsByCreator;
+    mapping(uint256 => address) public artist;
 
     // Define a new role identifier for the admin role
     bytes32 public constant ADMIN_ROLE = keccak256('ADMIN_ROLE');
+    bytes32 public constant ARTIST_ROLE = keccak256('ARTIST_ROLE');
 
     event NewNFT(
         address indexed nftAddress,
@@ -28,36 +33,51 @@ contract DBeatsFactory is Ownable, AccessControl {
         uint256 mintPrice
     );
 
-    constructor(address _platformWalletAddress) AccessControl() {
+    event ArtistAdded(address indexed artistAddress, uint256 artistNFTId);
+
+    constructor(
+        address _platformWalletAddress,
+        address _artistNFTAddress
+    ) AccessControl() {
         // Grant the admin role to the contract deployer
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _setupRole(ADMIN_ROLE, msg.sender);
         platformWalletAddress = _platformWalletAddress;
+        artistNFTContract = ArtistNFT(_artistNFTAddress);
     }
 
-    // Function to add a user to a specific role
-    function addUserToRole(bytes32 role, address account) public onlyOwner {
-        grantRole(role, account);
+    // Function to add an admin
+    function addAdmin(address account) public onlyRole(ADMIN_ROLE) {
+        grantRole(ADMIN_ROLE, account);
+    }
+
+    // Function to add an artist and mint nft to their account
+    function addArtist(address account) public onlyRole(ADMIN_ROLE) {
+        require(account != address(0), 'Invalid artist address');
+        require(!hasRole(ARTIST_ROLE, account), 'Address is already an artist');
+
+        /* GRANT ARTIST ROLE */
+        grantRole(ARTIST_ROLE, account);
+
+        /* MINT ARTIST NFT TO THEIR ACCOUNT */
+        uint256 newTokenId = artistNFTContract.safeMint(account);
+        emit ArtistAdded(account, newTokenId);
+
+        artist[_artistCounter.current()] = account;
+        _artistCounter.increment();
     }
 
     function createNFT(
-        // address _admin,
-        address _artistAddress,
         string memory _newTokenURI,
         string memory name,
         string memory symbol,
         uint256 mintPrice,
         uint256 _platformFeePercentage,
-        uint256 _royaltyFeePercentage
-    ) public {
-        // Check that the caller has the admin role
-        require(hasRole(ADMIN_ROLE, msg.sender), 'Caller is not an admin');
-
+    ) public onlyRole(ARTIST_ROLE) {
         _tokenCounter.increment();
 
         DBeatsNFT newNFT = new DBeatsNFT(
-            // _admin,
-            _royaltyFeePercentage,
-            _artistAddress,
+            msg.sender,
             _newTokenURI,
             name,
             symbol,
@@ -65,6 +85,8 @@ contract DBeatsFactory is Ownable, AccessControl {
             _platformFeePercentage,
             platformWalletAddress
         );
+
+        // Use the NFT (mint it to the artist or the marketplace address)
 
         emit NewNFT(
             address(newNFT),
@@ -89,5 +111,10 @@ contract DBeatsFactory is Ownable, AccessControl {
     // Function to get the current token count
     function getTokenCount() public view returns (uint256) {
         return _tokenCounter.current();
+    }
+
+    function updateArtistNFTContract(address _newArtistNFTAddress) public onlyRole(ADMIN_ROLE) {
+        require(_newArtistNFTAddress != address(0), "Invalid ArtistNFT contract address");
+        artistNFTContract = D_Beats_Artist(_newArtistNFTAddress);
     }
 }

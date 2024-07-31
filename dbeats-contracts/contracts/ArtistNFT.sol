@@ -1,26 +1,36 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.20;
 
 import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
+import '@openzeppelin/contracts/access/AccessControl.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 
-contract D_Beats_Artist is ERC721, ERC721URIStorage, Ownable {
+contract ArtistNFT is ERC721, ERC721URIStorage, Ownable, AccessControl {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
+    bytes32 public constant MINTER_ROLE = keccak256('MINTER_ROLE');
+    string private uri;
 
     event Attest(address indexed to, uint256 indexed tokenId);
     event Revoke(address indexed to, uint256 indexed tokenId);
 
-    constructor() ERC721('D-Beats-Artist', 'DBA') {}
+    constructor(string memory _uri) ERC721('DBeats_Artist', 'DBA') {
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _setupRole(MINTER_ROLE, msg.sender);
+        NFTUri = _uri;
+    }
 
-    function safeMint(address to, string memory uri) public onlyOwner {
+    function safeMint(
+        address to
+    ) public onlyRole(MINTER_ROLE) returns (uint256) {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
+        return tokenId;
     }
 
     function burn(uint256 tokenId) external {
@@ -31,7 +41,7 @@ contract D_Beats_Artist is ERC721, ERC721URIStorage, Ownable {
         _burn(tokenId);
     }
 
-    function revoke(uint256 tokenId) external onlyOwner {
+    function revoke(uint256 tokenId) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _burn(tokenId);
     }
 
@@ -68,5 +78,11 @@ contract D_Beats_Artist is ERC721, ERC721URIStorage, Ownable {
         uint256 tokenId
     ) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
+    }
+
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view override(ERC721, AccessControl) returns (bool) {
+        return super.supportsInterface(interfaceId);
     }
 }

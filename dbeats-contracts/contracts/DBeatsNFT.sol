@@ -10,18 +10,14 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
+    /* State Variables For NFT Constructor */
     uint256 public _mintPrice;
     uint256 private _platformFeePercentage;
-    uint256 public _royaltyFeePercentage;
     string public _uri;
     address public _artistAddress;
-    address public _platformWalletAddress; //can set to private
+    address public _platformWalletAddress =
+        '0x143C4BEEf05eeB3eFb9062A96Af96C0564d3FBd4'; //can set to private
 
-    event RoyaltyPaid(
-        address indexed artist,
-        address indexed buyer,
-        uint256 amount
-    );
     event Minted(address indexed to, uint256 indexed tokenId, string uri);
 
     modifier onlyAdmin() {
@@ -41,21 +37,17 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     }
 
     constructor(
-        uint256 royaltyFeePercentage,
         address artistAddress,
         string memory _newTokenURI,
         string memory _name,
         string memory _symbol,
         uint256 mintPrice,
         uint256 platformFeePercentage,
-        address platformWalletAddress
     ) ERC721(_name, _symbol) {
         _uri = _newTokenURI;
         _artistAddress = artistAddress;
         _mintPrice = mintPrice;
         _platformFeePercentage = platformFeePercentage;
-        _platformWalletAddress = platformWalletAddress;
-        _royaltyFeePercentage = royaltyFeePercentage;
     }
 
     function mint(address to, uint256 quantity) public payable {
@@ -79,14 +71,13 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     }
 
     function withdraw() public onlyArtist {
-        require(msg.sender == _artistAddress, 'Only the artist can withdraw');
         payable(msg.sender).transfer(address(this).balance);
     }
 
     function tokenURI(
         uint256 tokenId
     ) public view override(ERC721, ERC721URIStorage) returns (string memory) {
-        return _uri;
+        return super.tokenURI(tokenId);
     }
 
     function _baseURI() internal view override returns (string memory) {
