@@ -96,9 +96,7 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         uint256 tokenId
     ) internal override(ERC721) {
         if (from != address(0) && to != address(0)) {
-            uint256 royaltyAmount = (msg.value * _royaltyFeePercentage) / 100;
-            payable(_artistAddress).transfer(royaltyAmount);
-            emit RoyaltyPaid(_artistAddress, to, royaltyAmount);
+            // REMOVED ROYALTY PAYMENT
         }
         super._beforeTokenTransfer(from, to, tokenId);
     }
