@@ -10,13 +10,12 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
-    /* State Variables For NFT Constructor */
     uint256 public _mintPrice;
     uint256 private _platformFeePercentage;
     string public _uri;
     address public _artistAddress;
-    address public _platformWalletAddress =
-        '0x143C4BEEf05eeB3eFb9062A96Af96C0564d3FBd4'; //can set to private
+    address public _platformWalletAddress; //can set to private
+    string public _genre;
 
     event Minted(address indexed to, uint256 indexed tokenId, string uri);
 
@@ -43,11 +42,15 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         string memory _symbol,
         uint256 mintPrice,
         uint256 platformFeePercentage,
+        address platformWalletAddress,
+        string memory  genre
     ) ERC721(_name, _symbol) {
         _uri = _newTokenURI;
         _artistAddress = artistAddress;
         _mintPrice = mintPrice;
         _platformFeePercentage = platformFeePercentage;
+        _platformWalletAddress = platformWalletAddress;
+        _genre = genre;
     }
 
     function mint(address to, uint256 quantity) public payable {
@@ -70,14 +73,21 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         _platformFeePercentage = _newPlatformFeePercent;
     }
 
+    function updatePlatformWalletAddress(address _newPlatformWalletAddress) external onlyAdmin {
+        _platformWalletAddress = _newPlatformWalletAddress;
+    }
+
     function withdraw() public onlyArtist {
+        require(msg.sender == _artistAddress, 'Only the artist can withdraw');
         payable(msg.sender).transfer(address(this).balance);
     }
+
+    //overrides for solidity
 
     function tokenURI(
         uint256 tokenId
     ) public view override(ERC721, ERC721URIStorage) returns (string memory) {
-        return super.tokenURI(tokenId);
+        return _uri;
     }
 
     function _baseURI() internal view override returns (string memory) {
@@ -90,14 +100,4 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         super._burn(tokenId);
     }
 
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal override(ERC721) {
-        if (from != address(0) && to != address(0)) {
-            // REMOVED ROYALTY PAYMENT
-        }
-        super._beforeTokenTransfer(from, to, tokenId);
-    }
 }
