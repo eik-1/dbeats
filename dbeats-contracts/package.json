@@ -16,8 +16,8 @@
 		"@typechain/hardhat": "^9.0.0",
 		"chai": "^4.2.0",
 		"ethers": "^6.4.0",
-		"hardhat-gas-reporter": "^1.0.8",
-		"prettier": "^3.3.3",
+		"hardhat-contract-sizer": "^2.10.0",
+		"hardhat-gas-reporter": "^1.0.10",
 		"solidity-coverage": "^0.8.0",
 		"typechain": "^8.3.0"
 	}

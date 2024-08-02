@@ -6,14 +6,12 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/access/AccessControl.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import './DBeatsNFT.sol';
+// import './ArtistNFT.sol';//?? why import this??
 
 contract DBeatsFactory is Ownable, AccessControl {
-
     using Counters for Counters.Counter;
-
     Counters.Counter private _tokenCounter;
     address public platformWalletAddress;
-
 
     mapping(address => address[]) public nftsByCreator;
 
@@ -27,9 +25,7 @@ contract DBeatsFactory is Ownable, AccessControl {
         string _newTokenURI,
         string name,
         string symbol,
-        uint256 mintPrice,
-        string _genre
-      
+        uint256 mintPrice
     );
 
     constructor(address _platformWalletAddress) AccessControl() {
@@ -38,12 +34,7 @@ contract DBeatsFactory is Ownable, AccessControl {
         platformWalletAddress = _platformWalletAddress;
     }
 
-    // // Function to add a user to a specific role
-    function addUserToRole(bytes32 role, address account) public onlyOwner {
-        grantRole(role, account);
-    }
-
-        // Function to add an admin
+    // Function to add an admin
     function addAdmin(address account) public {
         // Check that the caller has the admin role
         require(hasRole(ADMIN_ROLE, msg.sender), 'Caller is not an admin');
@@ -57,40 +48,38 @@ contract DBeatsFactory is Ownable, AccessControl {
         grantRole(ARTIST_ROLE, account);
     }
 
-    // Function to create a new NFT
     function createNFT(
         address _artistAddress,
         string memory _newTokenURI,
         string memory name,
         string memory symbol,
         uint256 mintPrice,
-        uint256 _platformFeePercentage,
-        string memory _genre
+        uint256 _platformFeePercentage
     ) public {
-        // Check that the caller has the artist role
-        require(hasRole(ARTIST_ROLE, msg.sender), "Caller is not an artist");
+        // Check that the caller has the admin role
+        require(hasRole(ARTIST_ROLE, msg.sender), 'Caller is not an artist');
 
         _tokenCounter.increment();
 
         DBeatsNFT newNFT = new DBeatsNFT(
+            // _royaltyFeePercentage,
             _artistAddress,
             _newTokenURI,
             name,
             symbol,
             mintPrice,
-            _platformFeePercentage,
-            platformWalletAddress,
-            _genre
-        );
+            _platformFeePercentage
+        ); 
+
 
         emit NewNFT(
             address(newNFT),
+            // _royaltyFeePercentage,
             _artistAddress,
             _newTokenURI,
             name,
             symbol,
-            mintPrice,
-            _genre
+            mintPrice
         );
 
         nftsByCreator[_artistAddress].push(address(newNFT));
