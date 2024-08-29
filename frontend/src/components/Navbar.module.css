@@ -3,7 +3,7 @@
   top: 0;
   right: 0;
   left: 16rem;
-  height: 60px;
+  height: 5rem;
   background-color: transparent;
   display: flex;
   justify-content: flex-end;
@@ -11,3 +11,29 @@
   padding: 0 20px;
   z-index: 1000;
 }
+
+.searchContainer {
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  padding: 2px 7px;
+  display: flex;
+  align-items: center;
+  width: 70%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.searchBar {
+  background-color: transparent;
+  flex-grow: 1;
+  height: 40px;
+  padding: 0 15px;
+  padding-bottom: 3px;
+  font-size: 20px;
+  outline: none;
+}
+
+.searchBar::placeholder {
+  color: #424242;
+}
+
