@@ -2,9 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* color palette
+    #F5F5F5,
+    #48CFCB,
+    #229799,
+    #424242
+*/
+
 body {
-    background-color: #424242;
-    color: #F5F5F5;
+    background-color: #F5F5F5;
+    color: #424242;
 }
 
 @font-face {
