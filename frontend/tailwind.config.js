@@ -3,7 +3,14 @@
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                acidNormal: "Acid Grotesk Normal",
+                acidRegular: "Acid Grotesk Regular",
+                acidMedium: "Acid Grotesk Medium",
+                acidBold: "Acid Grotesk Bold",
+            }
+        },
     },
     plugins: [],
 }

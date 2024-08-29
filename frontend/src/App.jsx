@@ -1,8 +1,23 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import AppLayout from "./pages/AppLayout"
+import LandingPage from "./pages/LandingPage"
+
+
+const router = createBrowserRouter([
+    {
+        element: <AppLayout />,
+        children: [
+            {
+                path: "/",
+                element: <LandingPage />
+            } 
+        ]
+    }
+])
+
 function App() {
     return (
-        <div className="flex items-center justify-center">
-            <h1 className="font-bold text-4xl">Hello, MUSIC!</h1>
-        </div>
+        <RouterProvider router={router} />
     )
 }
 

@@ -1,0 +1,47 @@
+.sidebar {
+    width: 16rem;
+    height: 100dvh;
+    position: fixed;
+    padding: 1rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.4);
+}
+
+.logo {
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+}
+
+.logo span {
+    color: #48CFCB;
+    font-size: 30px;
+    font-family: "Acid Grotesk Bold";
+}
+
+.navigation {
+    margin-top: 32px;
+    font-family: "Acid Grotesk Bold";
+    font-size: 20px;
+}
+
+.sidebarLink {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    color: #F5F5F5;
+    transition: all 0.1s;
+}
+
+.sidebarLink:hover {
+    color: #48CFCB;
+}
+
+.sidebarLink span {
+    margin-left: 16px;
+    transition: all 0.3s;
+}
+
+.sidebarLink span:hover {
+    margin-left: 20px;
+}

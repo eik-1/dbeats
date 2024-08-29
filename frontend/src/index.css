@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background-color: #424242;
+    color: #F5F5F5;
+}
+
+@font-face {
+    font-family: "Acid Grotesk Normal";
+    src: url(../public/fonts/Normal.otf) format("opentype");
+}
+  
+@font-face {
+    font-family: "Acid Grotesk Medium";
+    src: url(../public/fonts/Meidum.otf) format("opentype");
+}
+  
+@font-face {
+    font-family: "Acid Grotesk Regular";
+    src: url(../public/fonts/Regular.otf) format("opentype"); 
+}
+
+@font-face {
+    font-family: "Acid Grotesk Bold";
+    src: url(../public/fonts/Bold.otf) format("opentype"); 
+}
