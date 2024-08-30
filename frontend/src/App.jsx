@@ -20,6 +20,12 @@ const base = {
     currency: "ETH",
     rpcUrl: import.meta.env.VITE_BASE_RPC,
 }
+const arbitrumSepolia = {
+    chainId: 421614,
+    name: "Arbitrum Sepolia",
+    currency: "ETH",
+    rpcUrl: import.meta.env.VITE_ARB_SEPOLIA_RPC,
+}
 
 const metadata = {
     name: "DBeats",
@@ -44,7 +50,7 @@ const ethersConfig = defaultConfig({
 
 createWeb3Modal({
     ethersConfig,
-    chains: [mainnet, base],
+    chains: [arbitrumSepolia, mainnet, base],
     projectId,
     enableAnalytics: true,
     themeMode: "light",
