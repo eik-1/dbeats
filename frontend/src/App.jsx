@@ -3,6 +3,9 @@ import { createWeb3Modal, defaultConfig } from "@web3modal/ethers/react"
 
 import AppLayout from "./pages/AppLayout"
 import LandingPage from "./pages/LandingPage"
+import Profile from "./pages/Profile"
+import Error from "./components/ui/Error"
+import { UserProvider } from "./contexts/UserProvider"
 
 const projectId = import.meta.env.VITE_WALLETCONNECT_ID
 
@@ -59,17 +62,28 @@ createWeb3Modal({
 const router = createBrowserRouter([
     {
         element: <AppLayout />,
+        errorElement: <Error />,
         children: [
             {
                 path: "/",
                 element: <LandingPage />,
+                errorElement: <Error />,
+            },
+            {
+                path: "/profile",
+                element: <Profile />,
+                errorElement: <Error />,
             },
         ],
     },
 ])
 
 function App() {
-    return <RouterProvider router={router} />
+    return (
+        <UserProvider>
+            <RouterProvider router={router} />
+        </UserProvider>
+    )
 }
 
 export default App

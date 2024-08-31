@@ -1,0 +1,11 @@
+.appLayout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.mainContent {
+    flex-grow: 1;
+    margin-left: 16rem; 
+    display: flex;
+    flex-direction: column;
+}

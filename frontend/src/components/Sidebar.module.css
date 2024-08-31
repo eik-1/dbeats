@@ -1,9 +1,12 @@
 .sidebar {
     width: 16rem;
-    height: 100dvh;
+    height: 100vh;
     position: fixed;
+    top: 0;
+    left: 0;
     padding: 1rem;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
 }
 
 .logo {

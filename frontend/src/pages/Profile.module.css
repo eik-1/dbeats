@@ -1,0 +1,82 @@
+.profileContainer {
+    padding: 2rem;
+    margin-top: 5rem; /* Account for navbar height */
+    min-height: calc(100vh - 5rem); /* Full viewport height minus navbar height */
+    box-sizing: border-box;
+}
+
+.profileHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.profilePicture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profileInfo {
+    flex-grow: 1;
+    margin-left: 2rem;
+}
+
+.name {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-family: "Acid Grotesk Bold", sans-serif;
+    color: #424242;
+}
+
+.address {
+    font-size: 1rem;
+    color: #666;
+    font-family: "Acid Grotesk Regular", sans-serif;
+}
+
+.editButton {
+    background-color: #48CFCB;
+    color: #F5F5F5;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: "Acid Grotesk Medium", sans-serif;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.editButton:hover {
+    background-color: #229799;
+}
+
+.profileContent {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-family: "Acid Grotesk Bold", sans-serif;
+    color: #424242;
+}
+
+.about {
+    font-family: "Acid Grotesk Normal", sans-serif;
+    color: #424242;
+    line-height: 1.6;
+}
+
+.notConnected {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #424242;
+    margin-top: 2rem;
+    font-family: "Acid Grotesk Medium", sans-serif;
+}
