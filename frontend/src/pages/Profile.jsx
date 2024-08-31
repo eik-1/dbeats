@@ -1,11 +1,14 @@
 import React from "react"
 import { useWeb3ModalAccount } from "@web3modal/ethers/react"
+import { useNavigate } from "react-router-dom"
+
 import styles from "./Profile.module.css"
 import { useUser } from "../contexts/UserProvider"
 
 function Profile() {
     const { address, isConnected } = useWeb3ModalAccount()
     const { user } = useUser()
+    const navigate = useNavigate()
 
     if (!isConnected) {
         return (
@@ -27,7 +30,20 @@ function Profile() {
                     <h1 className={styles.name}>{user.name}</h1>
                     <p className={styles.address}>{address}</p>
                 </div>
-                <button className={styles.editButton}>Edit Profile</button>
+                <div className={styles.profileButtons}>
+                    <button
+                        onClick={() => navigate("/profile/edit")}
+                        className={styles.applyButton}
+                    >
+                        Apply For Artist
+                    </button>
+                    <button
+                        onClick={() => navigate("/profile/edit")}
+                        className={styles.editButton}
+                    >
+                        Edit Profile
+                    </button>
+                </div>
             </div>
             <div className={styles.profileContent}>
                 <h2 className={styles.sectionTitle}>About</h2>

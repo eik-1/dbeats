@@ -1,7 +1,7 @@
 .profileContainer {
     padding: 2rem;
-    margin-top: 5rem; /* Account for navbar height */
-    min-height: calc(100vh - 5rem); /* Full viewport height minus navbar height */
+    margin-top: 5rem; 
+    min-height: calc(100vh - 5rem); 
     box-sizing: border-box;
 }
 
@@ -15,7 +15,7 @@
 .profilePicture {
     width: 150px;
     height: 150px;
-    border-radius: 50%;
+    border-radius: 10%;
     object-fit: cover;
 }
 
@@ -37,20 +37,38 @@
     font-family: "Acid Grotesk Regular", sans-serif;
 }
 
-.editButton {
-    background-color: #48CFCB;
+.profileButtons {
     color: #F5F5F5;
+    display: flex;
+    gap: 1rem;
+}
+
+.applyButton {
+    background-color: hsla(0, 0%, 26%, 1);
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: 4px;
     cursor: pointer;
-    font-family: "Acid Grotesk Medium", sans-serif;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.applyButton:hover {
+    background-color: hsla(0, 0%, 20%, 1);
+}
+
+.editButton {
+    background-color: hsla(178, 58%, 55%, 1);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s ease;
 }
 
 .editButton:hover {
-    background-color: #229799;
+    background-color: hsla(178, 58%, 45%, 1);
 }
 
 .profileContent {
@@ -68,7 +86,6 @@
 }
 
 .about {
-    font-family: "Acid Grotesk Normal", sans-serif;
     color: #424242;
     line-height: 1.6;
 }
