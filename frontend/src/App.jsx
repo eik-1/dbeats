@@ -4,6 +4,7 @@ import { createWeb3Modal, defaultConfig } from "@web3modal/ethers/react"
 import AppLayout from "./pages/AppLayout"
 import LandingPage from "./pages/LandingPage"
 import Profile from "./pages/Profile"
+import Admin from "./pages/Admin"
 import Error from "./components/ui/Error"
 import { UserProvider } from "./contexts/UserProvider"
 
@@ -72,6 +73,11 @@ const router = createBrowserRouter([
             {
                 path: "/profile",
                 element: <Profile />,
+                errorElement: <Error />,
+            },
+            {
+                path: "/admin",
+                element: <Admin />,
                 errorElement: <Error />,
             },
         ],
