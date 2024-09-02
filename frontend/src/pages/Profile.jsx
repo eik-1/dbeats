@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { useWeb3ModalAccount } from "@web3modal/ethers/react"
 import { useNavigate } from "react-router-dom"
 
@@ -7,10 +7,19 @@ import { useUser } from "../contexts/UserProvider"
 
 function Profile() {
     const { address, isConnected } = useWeb3ModalAccount()
-    const { user } = useUser()
+    const { user, fetchUser } = useUser()
     const navigate = useNavigate()
 
-    if (!isConnected) {
+    useEffect(() => {
+        async function initializeUser() {
+            if (address) {
+                const newUser = await fetchUser(address)
+            }
+        }
+        initializeUser()
+    }, [isConnected, address])
+
+    if (!isConnected || !user) {
         return (
             <div className={styles.notConnected}>
                 Please connect your wallet to view your profile.
