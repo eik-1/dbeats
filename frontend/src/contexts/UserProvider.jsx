@@ -1,10 +1,4 @@
-import {
-    createContext,
-    useContext,
-    useReducer,
-    useState,
-    useEffect,
-} from "react"
+import { createContext, useContext, useState } from "react"
 import axios from "axios"
 import { useWeb3ModalAccount } from "@web3modal/ethers/react"
 
@@ -12,39 +6,7 @@ const API_BASE_URL = "http://localhost:3000"
 
 const UserContext = createContext()
 
-// const initialState = {
-//     user: {
-//         name: "Kanye",
-//         about: "I'm a music enthusiast and creator passionate about blockchain technology.",
-//         profilePicture:
-//             "https://indigo-neighbouring-smelt-221.mypinata.cloud/ipfs/QmUJnx5aRJs9Nks96CoCCFEBXATEfXAUNSnw6SYmbhGSzu",
-//         twitterUsername: "",
-//         isArtist: false,
-//     },
-// }
-
-// function userReducer(state, action) {
-//     switch (action.type) {
-//         case "UPDATE_USER":
-//             return {
-//                 ...state,
-//                 user: action.payload,
-//             }
-//         case "CONNECT_TWITTER":
-//             return {
-//                 ...state,
-//                 user: {
-//                     ...state.user,
-//                     twitterUsername: action.payload,
-//                 },
-//             }
-//         default:
-//             return state
-//     }
-// }
-
 function UserProvider({ children }) {
-    // const [state, dispatch] = useReducer(userReducer, initialState)
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
     const { address, isConnected } = useWeb3ModalAccount()
@@ -92,6 +54,18 @@ function UserProvider({ children }) {
         }
     }
 
+    async function applyForArtist() {
+        try {
+            const response = await axios.put(
+                `${API_BASE_URL}/user/${user.walletAddress}`,
+                { ...user, hasApplied: true },
+            )
+            setUser(response.data)
+        } catch (error) {
+            console.error("Error applying for artist:", error)
+        }
+    }
+
     // function connectTwitter(twitterUsername) {
     //     dispatch({ type: "CONNECT_TWITTER", payload: twitterUsername })
     // }
@@ -104,6 +78,7 @@ function UserProvider({ children }) {
                 updateUser,
                 createUser,
                 fetchUser,
+                applyForArtist,
             }}
         >
             {children}

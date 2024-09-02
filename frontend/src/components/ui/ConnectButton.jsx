@@ -21,15 +21,17 @@ export default function ConnectButton() {
                         name: "User",
                         about: "",
                         profilePicture:
-                            "https://example.com/default-avatar.png",
+                            "https://indigo-neighbouring-smelt-221.mypinata.cloud/ipfs/QmSJVuP5U1G3Wm4b3dgJWV1rcK19pbdPtUkRvJPYe8MBQa",
                         walletAddress: address,
                         isArtist: false,
+                        twitterUsername: "",
                     }
                     await createUser(newUser)
                 }
             }
         }
         initializeUser()
+        navigate("/profile")
     }, [isConnected, address])
 
     const handleClick = () => {

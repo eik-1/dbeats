@@ -20,11 +20,13 @@ const EditProfile = () => {
 
     function handleSubmit(e) {
         e.preventDefault()
-        updateUser({
+        const newUser = {
+            ...user,
             profilePicture,
             name,
             about,
-        })
+        }
+        updateUser(newUser)
         navigate("/profile")
     }
 

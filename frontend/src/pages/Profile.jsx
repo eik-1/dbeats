@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useWeb3ModalAccount } from "@web3modal/ethers/react"
 import { useNavigate } from "react-router-dom"
 
@@ -7,7 +7,7 @@ import { useUser } from "../contexts/UserProvider"
 
 function Profile() {
     const { address, isConnected } = useWeb3ModalAccount()
-    const { user, fetchUser } = useUser()
+    const { user, fetchUser, applyForArtist } = useUser()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -18,6 +18,11 @@ function Profile() {
         }
         initializeUser()
     }, [isConnected, address])
+
+    async function handleApply() {
+        await applyForArtist()
+        window.location.reload()
+    }
 
     if (!isConnected || !user) {
         return (
@@ -40,12 +45,19 @@ function Profile() {
                     <p className={styles.address}>{address}</p>
                 </div>
                 <div className={styles.profileButtons}>
-                    <button
-                        onClick={() => navigate("/profile/edit")}
-                        className={styles.applyButton}
-                    >
-                        Apply For Artist
-                    </button>
+                    {!user.hasApplied ? (
+                        <button
+                            onClick={handleApply}
+                            className={styles.applyButton}
+                        >
+                            Apply For Artist
+                        </button>
+                    ) : (
+                        <button disabled className={styles.appliedButton}>
+                            Applied
+                        </button>
+                    )}
+
                     <button
                         onClick={() => navigate("/profile/edit")}
                         className={styles.editButton}

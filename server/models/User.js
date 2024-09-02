@@ -5,8 +5,9 @@ const userSchema = new mongoose.Schema({
   about: { type: String, default: "" },
   profilePicture: { type: String, default: "" },
   twitterUsername: { type: String },
-  isArtist: { type: Boolean, default: false },
   walletAddress: { type: String, required: true, unique: true },
+  isArtist: { type: Boolean, default: false },
+  hasApplied: { type: Boolean, default: false },
 });
 
 const User = mongoose.model("User", userSchema);
