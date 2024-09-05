@@ -14,6 +14,23 @@ export const getUser = async (req, res) => {
   }
 };
 
+export const getUsersByName = async (req, res) => {
+  try {
+    const namePrefix = req.params.name;
+    const users = await User.find({
+      name: { $regex: `^${namePrefix}`, $options: "i" },
+    });
+    if (users.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No users found with the given name prefix" });
+    }
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 export const createUser = async (req, res) => {
   try {
     const newUser = new User(req.body);

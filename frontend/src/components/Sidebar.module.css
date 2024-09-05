@@ -47,3 +47,18 @@
 .sidebarLink span:hover {
     margin-left: 20px;
 }
+
+.createNFTButton {
+    background-color: #000;
+    color: #F5F5F5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    font-size: 20px;
+    font-family: "Acid Grotesk Bold";
+    border-radius: 50px;
+    width: 100%;
+    margin-top: 32px;
+    padding: 10px 8px
+}

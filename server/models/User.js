@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   walletAddress: { type: String, required: true, unique: true },
   isArtist: { type: Boolean, default: false },
   hasApplied: { type: Boolean, default: false },
+  followersCount: { type: Number, default: 0 },
 });
 
 const User = mongoose.model("User", userSchema);

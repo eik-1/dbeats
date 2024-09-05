@@ -40,7 +40,6 @@ const EditProfile = () => {
             const upload = await pinata.upload.file(selectedFile)
             const signedUrl = await pinata.gateways.createSignedURL({
                 cid: upload.cid,
-                expires: 30,
             })
             const newUser = {
                 ...user,

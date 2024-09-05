@@ -1,12 +1,18 @@
 import React from "react"
-import { Link } from "react-router-dom"
-import { Home, TrendingUp, Globe, User } from "lucide-react"
+import { Link, useNavigate } from "react-router-dom"
+import { Home, TrendingUp, Globe, User, Plus } from "lucide-react"
 import { useWeb3ModalAccount } from "@web3modal/ethers/react"
 
 import styles from "./Sidebar.module.css"
 
 function Sidebar() {
     const { isConnected } = useWeb3ModalAccount()
+    const navigate = useNavigate()
+
+    function handleCreateNFT() {
+        navigate("/create")
+    }
+
     return (
         <div className={styles.sidebar}>
             <div className={styles.logo}>
@@ -36,6 +42,14 @@ function Sidebar() {
                     />
                 )}
             </nav>
+            {isConnected && (
+                <button
+                    className={styles.createNFTButton}
+                    onClick={handleCreateNFT}
+                >
+                    <Plus size={23} strokeWidth={3} /> Create NFT
+                </button>
+            )}
         </div>
     )
 }

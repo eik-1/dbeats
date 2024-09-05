@@ -5,6 +5,8 @@ import AppLayout from "./pages/AppLayout"
 import LandingPage from "./pages/LandingPage"
 import Profile from "./pages/Profile"
 import Admin from "./pages/Admin"
+import Create from "./pages/Create"
+
 import EditProfile from "./components/EditProfile"
 import Error from "./components/ui/Error"
 import { UserProvider } from "./contexts/UserProvider"
@@ -84,6 +86,11 @@ const router = createBrowserRouter([
             {
                 path: "/admin",
                 element: <Admin />,
+                errorElement: <Error />,
+            },
+            {
+                path: "/create",
+                element: <Create />,
                 errorElement: <Error />,
             },
         ],

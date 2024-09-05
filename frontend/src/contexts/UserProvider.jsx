@@ -29,6 +29,17 @@ function UserProvider({ children }) {
         }
     }
 
+    async function searchUsers(name) {
+        try {
+            const response = await axios.get(
+                `${API_BASE_URL}/user/search/${name}`,
+            )
+            return response.data
+        } catch (error) {
+            console.error("Error searching users:", error)
+        }
+    }
+
     async function createUser(userData) {
         try {
             const response = await axios.post(
@@ -78,6 +89,7 @@ function UserProvider({ children }) {
                 updateUser,
                 createUser,
                 fetchUser,
+                searchUsers,
                 applyForArtist,
             }}
         >
