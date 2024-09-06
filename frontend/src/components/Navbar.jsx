@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
+import { useNavigate } from "react-router-dom"
 import { Search } from "lucide-react"
 
 import styles from "./Navbar.module.css"
@@ -11,6 +12,7 @@ function Navbar() {
     const [showResults, setShowResults] = useState(false)
     const { searchUsers } = useUser()
     const dropdownRef = useRef(null)
+    const navigate = useNavigate()
 
     async function handleSearch(e) {
         e.preventDefault()
@@ -61,7 +63,11 @@ function Navbar() {
             {showResults && searchResults.length > 0 && (
                 <div className={styles.searchResults} ref={dropdownRef}>
                     {searchResults.map((user) => (
-                        <div key={user.id} className={styles.searchResultItem}>
+                        <div
+                            key={user.walletAddress}
+                            className={styles.searchResultItem}
+                            onClick={() => navigate(`/${user.name}`)}
+                        >
                             <img
                                 src={user.profilePicture}
                                 alt={user.name}

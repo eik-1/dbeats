@@ -1,0 +1,86 @@
+.profileContainer {
+    padding: 2rem;
+    margin-top: 5rem; 
+    min-height: calc(100vh - 5rem); 
+    box-sizing: border-box;
+}
+
+.profileHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.profilePicture {
+    width: 150px;
+    height: 150px;
+    border-radius: 10%;
+    object-fit: cover;
+}
+
+.profileInfo {
+    flex-grow: 1;
+    margin-left: 2rem;
+}
+
+.name {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-family: "Acid Grotesk Bold", sans-serif;
+    color: #424242;
+}
+
+.address {
+    font-size: 1rem;
+    color: #666;
+    font-family: "Acid Grotesk Regular", sans-serif;
+}
+
+.profileButtons {
+    color: #F5F5F5;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.followButton {
+    background-color: hsla(178, 58%, 55%, 1);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    margin-right: 2rem
+}
+
+.followButton:hover {
+    background-color: hsla(178, 58%, 45%, 1);
+}
+
+.profileContent {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-family: "Acid Grotesk Bold", sans-serif;
+    color: #424242;
+}
+
+.about {
+    color: #424242;
+    line-height: 1.6;
+}
+
+.notConnected {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #424242;
+    margin-top: 2rem;
+    font-family: "Acid Grotesk Medium", sans-serif;
+}

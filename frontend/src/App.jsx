@@ -6,6 +6,7 @@ import LandingPage from "./pages/LandingPage"
 import Profile from "./pages/Profile"
 import Admin from "./pages/Admin"
 import Create from "./pages/Create"
+import UsersProfile from "./pages/UsersProfile"
 
 import EditProfile from "./components/EditProfile"
 import Error from "./components/ui/Error"
@@ -91,6 +92,11 @@ const router = createBrowserRouter([
             {
                 path: "/create",
                 element: <Create />,
+                errorElement: <Error />,
+            },
+            {
+                path: "/:name",
+                element: <UsersProfile />,
                 errorElement: <Error />,
             },
         ],
