@@ -22,28 +22,19 @@ const EditProfile = () => {
         fileInputRef.current.click()
     }
 
-    /*
-    cid: "bafybeigl3teghuouu52doxahbcmi7iyyhb354i34fjyezd7bmanvod2uwe"
-    id: "0191b911-bf9d-7f31-bc69-3958efbe9348"
-    indexed_at: "2024-09-03T18:07:23.841Z"
-    mime_type: "image/png"
-    name: "Screenshot_4.png"
-    number_of_files : 1
-    size: 1581842   
-    user_id: "a9ac988c-5ac2-4133-b655-19d4b3468328"     
-    */
-
     async function handleSubmit(e) {
         try {
             setIsLoading(true)
             e.preventDefault()
             const upload = await pinata.upload.file(selectedFile)
-            const signedUrl = await pinata.gateways.createSignedURL({
-                cid: upload.cid,
+            const cid = upload.data.cid
+            const url = await pinata.gateways.createSignedURL({
+                cid,
+                expires: 315400000,
             })
             const newUser = {
                 ...user,
-                profilePicture: signedUrl,
+                profilePicture: url,
                 name,
                 about,
             }
