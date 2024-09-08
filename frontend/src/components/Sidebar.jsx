@@ -4,10 +4,12 @@ import { Home, TrendingUp, Globe, User, Plus } from "lucide-react"
 import { useWeb3ModalAccount } from "@web3modal/ethers/react"
 
 import styles from "./Sidebar.module.css"
+import { useUser } from "../contexts/UserProvider"
 
 function Sidebar() {
     const { isConnected } = useWeb3ModalAccount()
     const navigate = useNavigate()
+    const { user } = useUser()
 
     function handleCreateNFT() {
         navigate("/create")
@@ -42,7 +44,7 @@ function Sidebar() {
                     />
                 )}
             </nav>
-            {isConnected && (
+            {isConnected && user?.isArtist && (
                 <button
                     className={styles.createNFTButton}
                     onClick={handleCreateNFT}

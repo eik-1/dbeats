@@ -1,3 +1,184 @@
 .container {
-    height: 100vh;
+    padding: 2rem;
+    margin-top: 5rem; 
+    min-height: calc(100vh - 5rem); 
+    box-sizing: border-box;
 }
+
+.heading {
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #fff;
+    border: 0.5px solid hsl(0 0% 80% / 0.5);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    gap: 0.5rem;
+}
+
+.inputGroup p {
+    font-size: 0.8rem;
+    color: hsla(0, 0%, 40%, 1);
+    font-family: "Acid Grotesk Regular", sans-serif;
+    margin: 0.3rem;
+}
+
+.inputGroup label {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    font-family: "Acid Grotesk Medium", sans-serif;
+    color: #424242;
+}
+
+.profilePictureContainer {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 10%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.profilePicture {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profilePictureOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.profilePictureContainer:hover .profilePictureOverlay {
+    opacity: 1;
+}
+
+.penIcon {
+    color: hsla(178, 58%, 55%, 1);
+    width: 25px;
+    height: 25px;
+}
+
+.nameAndGenre {
+    display: flex;
+    gap: 3rem;
+    justify-content: space-between;
+    padding-right: 15rem;
+}
+
+.inputBox {
+    border: 0.5px solid hsl(0 0% 70% / 0.5);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.inputBox:focus {
+    outline: none;
+    border: 0.5px solid hsl(0 0% 70% / 0.5);
+}
+
+.mintPriceContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #424242;
+    border-radius: 0.5rem;
+    border: 0px;
+    gap: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.currencySymbol {
+    color: #F5F5F5;
+    font-size: 1rem;
+}
+
+.musicTrackContainer {
+    width: 100%;
+    height: 100px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.musicTrackContainer:hover {
+    border-color: #007bff;
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.musicTrackPlaceholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.musicIcon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
+}
+
+.selectedTrackName {
+    font-size: 16px;
+    color: #424242;
+    word-break: break-all;
+    text-align: center;
+    padding: 0 16px;
+}
+
+.submitButton {
+    background-color: #48CFCB;
+    width: fit-content;
+    margin-top: 1.5rem;
+    color: #F5F5F5;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: "Acid Grotesk Medium", sans-serif;
+}
+
+.submitButtonDisabled {
+    background-color: hsl(0, 0%, 0%);
+    width: fit-content;
+    margin-top: 1.5rem;
+    color: #F5F5F5;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: not-allowed;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: "Acid Grotesk Medium", sans-serif;
+    opacity: 0.5;
+}
+
+

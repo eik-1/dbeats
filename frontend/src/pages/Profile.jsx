@@ -52,6 +52,8 @@ function Profile() {
                         >
                             Apply For Artist
                         </button>
+                    ) : user.isArtist ? (
+                        <></>
                     ) : (
                         <button disabled className={styles.appliedButton}>
                             Applied
