@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react"
 import { Pen, Music } from "lucide-react"
 import styles from "./Create.module.css"
 import { useUser } from "../contexts/UserProvider"
+import  ipfsUpload  from "../Utils/ipfsUpload"
 
 const Create = () => {
     const { user } = useUser()
@@ -13,6 +14,8 @@ const Create = () => {
     const [genre, setGenre] = useState("")
     const [mintPrice, setMintPrice] = useState("")
     const [selectedTrack, setSelectedTrack] = useState(null)
+    const [ipfsImageUrl, setIpfsImageUrl] = useState("")
+    const [ipfsTrackUrl, setIpfsTrackUrl] = useState("")
 
     /* State Variables For Form Validation */
     const [isFormValid, setIsFormValid] = useState(false)
@@ -41,6 +44,21 @@ const Create = () => {
     /* Form Submit Function */
     async function handleSubmit(e) {
         e.preventDefault()
+        if(musicImage){
+            const imageUrl = await ipfsUpload(selectedImageFile);
+            console.log("ipfs url: ", imageUrl);
+            setIpfsImageUrl(imageUrl)
+            }else{
+                console.log("no image selected")
+            }
+
+        if(selectedTrack){
+            const trackUrl = await ipfsUpload(selectedTrack);
+            console.log("ipfs url: ", trackUrl);
+            setIpfsTrackUrl(trackUrl)
+            }else{
+                console.log("no track selected")
+            }
     }
 
     /* Handle Track Functions */
@@ -63,7 +81,7 @@ const Create = () => {
     }
 
     /* Handle Image Functions */
-    function handleImageClick() {
+    async function handleImageClick() {
         fileInputRef.current.click()
     }
 
