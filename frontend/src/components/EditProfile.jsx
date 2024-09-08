@@ -26,6 +26,7 @@ const EditProfile = () => {
         try {
             setIsLoading(true)
             e.preventDefault()
+            console.log("selectedFile", selectedFile)
             const upload = await pinata.upload.file(selectedFile)
             const cid = upload.data.cid
             const url = await pinata.gateways.createSignedURL({
