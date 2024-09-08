@@ -3,6 +3,8 @@ import { Pen, Music } from "lucide-react"
 import styles from "./Create.module.css"
 import { useUser } from "../contexts/UserProvider"
 import  ipfsUpload  from "../Utils/ipfsUpload"
+import jsonUpload from "../Utils/jsonUpload"
+
 
 const Create = () => {
     const { user } = useUser()
@@ -16,6 +18,7 @@ const Create = () => {
     const [selectedTrack, setSelectedTrack] = useState(null)
     const [ipfsImageUrl, setIpfsImageUrl] = useState("")
     const [ipfsTrackUrl, setIpfsTrackUrl] = useState("")
+    const [jsonUrl, setJsonUrl] = useState("")
 
     /* State Variables For Form Validation */
     const [isFormValid, setIsFormValid] = useState(false)
@@ -59,6 +62,29 @@ const Create = () => {
             }else{
                 console.log("no track selected")
             }
+
+            if(ipfsImageUrl && ipfsTrackUrl){
+            const json = {
+                name: releaseName,
+                description: "description",
+                image: ipfsImageUrl,
+                animation_url: ipfsTrackUrl, 
+                attributes: [
+                    {
+                        trait_type: "artist",
+                        value: user.name
+                    },
+                    {
+                        trait_type: "genre",
+                        value: genre
+                    }
+                ]
+            }
+            const jsonReciept = await jsonUpload(json)
+            setJsonUrl(jsonReciept)
+           console.log("json url: ", jsonReciept)
+            
+        }
     }
 
     /* Handle Track Functions */
