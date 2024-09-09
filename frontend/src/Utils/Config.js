@@ -334,3 +334,5 @@ export const factoryABI = [
         type: "function",
     },
 ]
+
+export const platformPercentageFee = 10;

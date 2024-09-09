@@ -3,9 +3,15 @@ import { Pen, Music } from "lucide-react"
 import styles from "./Create.module.css"
 import { useUser } from "../contexts/UserProvider"
 import  ipfsUpload  from "../Utils/ipfsUpload"
+import jsonUpload from "../Utils/jsonUpload"
+import mint from "../Utils/Mint";
+import { useWeb3ModalAccount } from "@web3modal/ethers/react"
+import {ethers} from "ethers"
+
 
 const Create = () => {
     const { user } = useUser()
+    const { address, isConnected } = useWeb3ModalAccount()
 
     /* State Variables For Music Details */
     const [selectedImageFile, setSelectedImageFile] = useState()
@@ -16,6 +22,7 @@ const Create = () => {
     const [selectedTrack, setSelectedTrack] = useState(null)
     const [ipfsImageUrl, setIpfsImageUrl] = useState("")
     const [ipfsTrackUrl, setIpfsTrackUrl] = useState("")
+    const [jsonUrl, setJsonUrl] = useState("")
 
     /* State Variables For Form Validation */
     const [isFormValid, setIsFormValid] = useState(false)
@@ -59,7 +66,47 @@ const Create = () => {
             }else{
                 console.log("no track selected")
             }
+
+            if(ipfsImageUrl && ipfsTrackUrl){
+            const json = {
+                name: releaseName,
+                description: "description",
+                image: ipfsImageUrl,
+                animation_url: ipfsTrackUrl, 
+                attributes: [
+                    {
+                        trait_type: "artist",
+                        value: user.name
+                    },
+                    {
+                        trait_type: "genre",
+                        value: genre
+                    }
+                ]
+            }
+            const jsonReciept = await jsonUpload(json)
+            setJsonUrl(jsonReciept)
+           console.log("json url: ", jsonReciept)
+            
+        }
+        if(ipfsImageUrl){
+            console.log("mint ", address)
+            const price = ethers.parseUnits(mintPrice, "ether")
+        const tx = await mint({
+            user: address,
+            uri: jsonUrl,
+            name: releaseName,
+            symbol: "DBNFT",
+            price: price,
+            genre :genre
+        }
+        )
+        console.log("mint tx: ", tx)
     }
+        
+    }
+
+     
 
     /* Handle Track Functions */
     function handleTrackChange(e) {
