@@ -4,7 +4,7 @@ import styles from "./Create.module.css"
 import { useUser } from "../contexts/UserProvider"
 import  ipfsUpload  from "../Utils/ipfsUpload"
 import jsonUpload from "../Utils/jsonUpload"
-import mint from "../Utils/Mint";
+import Mint from "../Utils/Mint";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react"
 import {ethers} from "ethers"
 
@@ -92,7 +92,7 @@ const Create = () => {
         if(ipfsImageUrl){
             console.log("mint ", address)
             const price = ethers.parseUnits(mintPrice, "ether")
-        const tx = await mint({
+        const tx = await Mint({
             user: address,
             uri: jsonUrl,
             name: releaseName,
