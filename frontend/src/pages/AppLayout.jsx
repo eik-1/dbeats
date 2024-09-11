@@ -8,8 +8,8 @@ function AppLayout() {
     return (
         <div className={styles.appLayout}>
             <Sidebar />
+            <Navbar />
             <div className={styles.mainContent}>
-                <Navbar />
                 <Outlet />
             </div>
         </div>

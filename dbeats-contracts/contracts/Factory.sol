@@ -8,12 +8,10 @@ import '@openzeppelin/contracts/utils/Counters.sol';
 import './DBeatsNFT.sol';
 
 contract DBeatsFactory is Ownable, AccessControl {
-
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenCounter;
     address public platformWalletAddress;
-
 
     mapping(address => address[]) public nftsByCreator;
 
@@ -29,7 +27,6 @@ contract DBeatsFactory is Ownable, AccessControl {
         string symbol,
         uint256 mintPrice,
         string _genre
-      
     );
 
     constructor(address _platformWalletAddress) AccessControl() {
@@ -43,7 +40,7 @@ contract DBeatsFactory is Ownable, AccessControl {
         grantRole(role, account);
     }
 
-        // Function to add an admin
+    // Function to add an admin
     function addAdmin(address account) public {
         // Check that the caller has the admin role
         require(hasRole(ADMIN_ROLE, msg.sender), 'Caller is not an admin');
@@ -68,7 +65,7 @@ contract DBeatsFactory is Ownable, AccessControl {
         string memory _genre
     ) public {
         // Check that the caller has the artist role
-        require(hasRole(ARTIST_ROLE, msg.sender), "Caller is not an artist");
+        require(hasRole(ARTIST_ROLE, msg.sender), 'Caller is not an artist');
 
         _tokenCounter.increment();
 

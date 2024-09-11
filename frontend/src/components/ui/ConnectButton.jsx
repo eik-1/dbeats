@@ -1,5 +1,4 @@
 import React, { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
 import Avvvatars from "avvvatars-react"
 import { useWeb3Modal, useWeb3ModalAccount } from "@web3modal/ethers/react"
 
@@ -9,7 +8,6 @@ import { useUser } from "../../contexts/UserProvider"
 export default function ConnectButton() {
     const { open } = useWeb3Modal()
     const { isConnected, address } = useWeb3ModalAccount()
-    const navigate = useNavigate()
     const { createUser, fetchUser } = useUser()
 
     useEffect(() => {
@@ -31,7 +29,6 @@ export default function ConnectButton() {
             }
         }
         initializeUser()
-        navigate("/profile")
     }, [isConnected, address])
 
     const handleClick = () => {

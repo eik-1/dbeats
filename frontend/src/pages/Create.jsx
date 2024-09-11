@@ -1,25 +1,27 @@
 import React, { useState, useRef, useEffect } from "react"
 import { Pen, Music } from "lucide-react"
+import { useWeb3ModalAccount } from "@web3modal/ethers/react"
+import { ethers } from "ethers"
+
 import styles from "./Create.module.css"
 import { useUser } from "../contexts/UserProvider"
-import  ipfsUpload  from "../Utils/ipfsUpload"
+import ipfsUpload from "../Utils/ipfsUpload"
 import jsonUpload from "../Utils/jsonUpload"
-import Mint from "../Utils/Mint";
-import { useWeb3ModalAccount } from "@web3modal/ethers/react"
-import {ethers} from "ethers"
-
+import Mint from "../Utils/Mint"
 
 const Create = () => {
     const { user } = useUser()
-    const { address, isConnected } = useWeb3ModalAccount()
+    const { address } = useWeb3ModalAccount()
+
+    /* State Variables For UI Changes using useRef */
+    const [musicImage, setMusicImage] = useState()
 
     /* State Variables For Music Details */
     const [selectedImageFile, setSelectedImageFile] = useState()
-    const [musicImage, setMusicImage] = useState()
+    const [selectedTrack, setSelectedTrack] = useState(null)
     const [releaseName, setReleaseName] = useState("")
     const [genre, setGenre] = useState("")
     const [mintPrice, setMintPrice] = useState("")
-    const [selectedTrack, setSelectedTrack] = useState(null)
     const [ipfsImageUrl, setIpfsImageUrl] = useState("")
     const [ipfsTrackUrl, setIpfsTrackUrl] = useState("")
     const [jsonUrl, setJsonUrl] = useState("")
@@ -28,6 +30,7 @@ const Create = () => {
     const [isFormValid, setIsFormValid] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState("")
+    const [formError, setFormError] = useState("")
 
     /* Refs For Input Fields */
     const fileInputRef = useRef(null)
@@ -51,62 +54,81 @@ const Create = () => {
     /* Form Submit Function */
     async function handleSubmit(e) {
         e.preventDefault()
-        if(musicImage){
-            const imageUrl = await ipfsUpload(selectedImageFile);
-            console.log("ipfs url: ", imageUrl);
-            setIpfsImageUrl(imageUrl)
-            }else{
+        setIsLoading(true)
+        try {
+            setFormError("")
+            if (musicImage) {
+                const imageUrl = await ipfsUpload(selectedImageFile)
+                console.log("ipfs url for image: ", imageUrl)
+                setIpfsImageUrl(imageUrl)
+            } else {
                 console.log("no image selected")
             }
 
-        if(selectedTrack){
-            const trackUrl = await ipfsUpload(selectedTrack);
-            console.log("ipfs url: ", trackUrl);
-            setIpfsTrackUrl(trackUrl)
-            }else{
+            if (selectedTrack) {
+                const trackUrl = await ipfsUpload(selectedTrack)
+                console.log("ipfs url for track: ", trackUrl)
+                setIpfsTrackUrl(trackUrl)
+            } else {
                 console.log("no track selected")
             }
+        } catch (error) {
+            setFormError(error.message)
+            console.error("Error uploading to ipfs:", error)
+        }
 
-            if(ipfsImageUrl && ipfsTrackUrl){
-            const json = {
-                name: releaseName,
-                description: "description",
-                image: ipfsImageUrl,
-                animation_url: ipfsTrackUrl, 
-                attributes: [
-                    {
-                        trait_type: "artist",
-                        value: user.name
-                    },
-                    {
-                        trait_type: "genre",
-                        value: genre
-                    }
-                ]
+        try {
+            if (ipfsImageUrl && ipfsTrackUrl) {
+                const json = {
+                    name: releaseName,
+                    description: "description",
+                    image: ipfsImageUrl,
+                    animation_url: ipfsTrackUrl,
+                    attributes: [
+                        {
+                            trait_type: "artist",
+                            value: user.name,
+                        },
+                        {
+                            trait_type: "genre",
+                            value: genre,
+                        },
+                    ],
+                }
+                const jsonReciept = await jsonUpload(json)
+                setJsonUrl(jsonReciept)
+                console.log("json url: ", jsonReciept)
+            } else {
+                console.error("Error generating json")
             }
-            const jsonReciept = await jsonUpload(json)
-            setJsonUrl(jsonReciept)
-           console.log("json url: ", jsonReciept)
-            
+        } catch (error) {
+            setFormError(error.message)
+            console.error("Error generating json:", error)
         }
-        if(ipfsImageUrl){
-            console.log("mint ", address)
-            const price = ethers.parseUnits(mintPrice, "ether")
-        const tx = await Mint({
-            user: address,
-            uri: jsonUrl,
-            name: releaseName,
-            symbol: "DBNFT",
-            price: price,
-            genre :genre
-        }
-        )
-        console.log("mint tx: ", tx)
-    }
-        
-    }
 
-     
+        try {
+            if (ipfsImageUrl) {
+                console.log("Minting NFT... ", address)
+                const price = ethers.parseUnits(mintPrice, "ether")
+                const tx = await Mint({
+                    user: address,
+                    uri: jsonUrl,
+                    name: releaseName,
+                    symbol: "DBNFT",
+                    price: price,
+                    genre: genre,
+                })
+                console.log("mint tx: ", tx)
+            } else {
+                console.error("Error Minting The NFT")
+            }
+        } catch (error) {
+            setFormError(error.message)
+            console.error("Error Minting The NFT:", error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     /* Handle Track Functions */
     function handleTrackChange(e) {
@@ -267,15 +289,17 @@ const Create = () => {
                 </div>
                 <button
                     type="submit"
-                    className={
-                        !isFormValid
-                            ? styles.submitButtonDisabled
-                            : styles.submitButton
-                    }
+                    className={styles.submitButton}
                     onClick={handleSubmit}
                     disabled={isLoading || !isFormValid}
                 >
-                    {isLoading ? "Loading..." : "Create"}
+                    {formError ? (
+                        <span className={styles.error}>{formError}</span>
+                    ) : isLoading ? (
+                        "Minting..."
+                    ) : (
+                        "Create"
+                    )}
                 </button>
             </form>
         </div>
