@@ -79,11 +79,12 @@ const Create = () => {
 
         try {
             if (ipfsImageUrl && ipfsTrackUrl) {
+                console.log("generating json...", ipfsImageUrl, ipfsTrackUrl)
                 const json = {
                     name: releaseName,
                     description: "description",
-                    image: ipfsImageUrl,
-                    animation_url: ipfsTrackUrl,
+                    image: "ipfs://" + ipfsImageUrl,
+                    animation_url: "ipfs://" + ipfsTrackUrl,
                     attributes: [
                         {
                             trait_type: "artist",
