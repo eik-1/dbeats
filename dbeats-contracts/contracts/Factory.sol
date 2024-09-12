@@ -8,10 +8,12 @@ import '@openzeppelin/contracts/utils/Counters.sol';
 import './DBeatsNFT.sol';
 
 contract DBeatsFactory is Ownable, AccessControl {
+
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenCounter;
     address public platformWalletAddress;
+    uint256 public platformFeePercentage;
 
     mapping(address => address[]) public nftsByCreator;
 
@@ -27,12 +29,14 @@ contract DBeatsFactory is Ownable, AccessControl {
         string symbol,
         uint256 mintPrice,
         string _genre
+      
     );
 
-    constructor(address _platformWalletAddress) AccessControl() {
+    constructor(address _platformWalletAddress, uint256 _platformFeePercentage) AccessControl() {
         // Grant the admin role to the contract deployer
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         platformWalletAddress = _platformWalletAddress;
+        platformFeePercentage = _platformFeePercentage;
     }
 
     // // Function to add a user to a specific role
@@ -40,7 +44,7 @@ contract DBeatsFactory is Ownable, AccessControl {
         grantRole(role, account);
     }
 
-    // Function to add an admin
+        // Function to add an admin
     function addAdmin(address account) public {
         // Check that the caller has the admin role
         require(hasRole(ADMIN_ROLE, msg.sender), 'Caller is not an admin');
@@ -61,11 +65,10 @@ contract DBeatsFactory is Ownable, AccessControl {
         string memory name,
         string memory symbol,
         uint256 mintPrice,
-        uint256 _platformFeePercentage,
         string memory _genre
     ) public {
         // Check that the caller has the artist role
-        require(hasRole(ARTIST_ROLE, msg.sender), 'Caller is not an artist');
+        require(hasRole(ARTIST_ROLE, msg.sender), "Caller is not an artist");
 
         _tokenCounter.increment();
 
@@ -75,7 +78,7 @@ contract DBeatsFactory is Ownable, AccessControl {
             name,
             symbol,
             mintPrice,
-            _platformFeePercentage,
+            platformFeePercentage,
             platformWalletAddress,
             _genre
         );
@@ -103,5 +106,10 @@ contract DBeatsFactory is Ownable, AccessControl {
     // Function to get the current token count
     function getTokenCount() public view returns (uint256) {
         return _tokenCounter.current();
+    }
+
+    //Function to update platform percentage fee
+    function updatePlatformFee(uint256 _newPlatformFeePercent) external onlyOwner {
+        platformFeePercentage = _newPlatformFeePercent;
     }
 }
