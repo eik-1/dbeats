@@ -8,7 +8,7 @@ const ipfsUpload = async (file) => {
             cid,
             expires: 315400000,
         })
-        return url
+        return cid
     } catch (error) {
         console.error("Error uploading file:", error)
         throw error
