@@ -1,6 +1,4 @@
-import { ethers } from "ethers"
-import { BrowserProvider } from "ethers"
-
+import { ethers, BrowserProvider  } from "ethers"
 import {
     factoryContractAddress,
     factoryABI,
@@ -13,12 +11,25 @@ const Mint = async (props) => {
 
     const provider = new BrowserProvider(window.ethereum)
     const signer = await provider.getSigner()
+    const factoryContractInstanceWithSigner = new ethers.Contract(
+        factoryContractAddress,
+        factoryABI,
+        signer,
+    )
+    console.log("minting ...")
     try {
-        const factoryContractInstanceWithSigner = new ethers.Contract(
-            factoryContractAddress,
-            factoryABI,
-            signer,
-        )
+
+        const gasEstimate = await factoryContractInstanceWithSigner.createNFT.estimateGas(
+            props.user,
+            props.uri,
+            props.name,
+            props.symbol,
+            props.price,
+            platformPercentageFee,
+            props.genre
+        );
+        console.log("Estimated Gas: ", gasEstimate.toString());
+
         const tx = await factoryContractInstanceWithSigner.createNFT(
             props.user,
             props.uri,
@@ -27,8 +38,12 @@ const Mint = async (props) => {
             props.price,
             platformPercentageFee,
             props.genre,
+            {
+                gasLimit: gasEstimate,
+            }
         )
-        const receipt = await tx.wait()
+        
+        const receipt = await tx.wait(2)
         console.log("tx: ", receipt)
         return receipt
     } catch (error) {
