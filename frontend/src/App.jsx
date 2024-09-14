@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { createWeb3Modal, defaultConfig } from "@web3modal/ethers/react"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 import AppLayout from "./pages/AppLayout"
 import LandingPage from "./pages/LandingPage"
@@ -7,6 +8,7 @@ import Profile from "./pages/Profile"
 import Admin from "./pages/Admin"
 import Create from "./pages/Create"
 import UsersProfile from "./pages/UsersProfile"
+import Market from "./pages/Market"
 
 import EditProfile from "./components/EditProfile"
 import Error from "./components/ui/Error"
@@ -64,6 +66,14 @@ createWeb3Modal({
     themeMode: "light",
 })
 
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 60 * 1000,
+        },
+    },
+})
+
 const router = createBrowserRouter([
     {
         element: <AppLayout />,
@@ -97,6 +107,15 @@ const router = createBrowserRouter([
             {
                 path: "/:name",
                 element: <UsersProfile />,
+                errorElement: <Error />,
+            },
+            {
+                path: "/market",
+                element: (
+                    <QueryClientProvider client={queryClient}>
+                        <Market />
+                    </QueryClientProvider>
+                ),
                 errorElement: <Error />,
             },
         ],

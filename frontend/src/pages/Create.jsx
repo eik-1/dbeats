@@ -108,7 +108,7 @@ const Create = () => {
         }
 
         try {
-            if (ipfsImageUrl) {
+            if (jsonUrl) {
                 console.log("Minting NFT... ", address)
                 const price = ethers.parseUnits(mintPrice, "ether")
                 const tx = await Mint({

@@ -1,0 +1,17 @@
+.marketContainer {
+  padding: 2.4rem 3.2rem;
+}
+  
+.nftList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.notConnected {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #424242;
+  margin-top: 2rem;
+  font-family: "Acid Grotesk Medium", sans-serif;
+}
