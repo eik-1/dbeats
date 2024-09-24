@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react"
-import { Play } from "lucide-react"
+import { Play, Pause } from "lucide-react"
 import styles from "./NFTCard.module.css"
 import { Skeleton } from "./ui/Skeleton"
+import { useMusic } from "../contexts/MusicProvider"
 
 function NFTCard({ id, uri }) {
     const [name, setName] = useState("")
@@ -10,9 +11,10 @@ function NFTCard({ id, uri }) {
     const [artist, setArtist] = useState("")
     const [loading, setLoading] = useState(true)
 
+    const { currentTrack, isPlaying, play, pauseTrack } = useMusic()
+
     useEffect(() => {
         const fetchNftData = async () => {
-            console.log(uri)
             try {
                 const response = await fetch(uri)
                 const data = await response.json()
@@ -30,6 +32,14 @@ function NFTCard({ id, uri }) {
         fetchNftData()
     }, [uri])
 
+    const handlePlayClick = () => {
+        if (currentTrack && currentTrack.id === id && isPlaying) {
+            pauseTrack()
+        } else {
+            play({ id, name, artist, musicUrl, imageUrl })
+        }
+    }
+
     if (loading) {
         return <Skeleton className="h-[125px] w-[250px] rounded-xl" />
     }
@@ -43,8 +53,12 @@ function NFTCard({ id, uri }) {
                     <h1 className={styles.trackName}>{name}</h1>
                     <h2 className={styles.artistName}>{artist}</h2>
                 </div>
-                <button className={styles.playButton}>
-                    <Play size={23} fill="#000" />
+                <button className={styles.playButton} onClick={handlePlayClick}>
+                    {currentTrack && currentTrack.id === id && isPlaying ? (
+                        <Pause size={23} fill="#000" />
+                    ) : (
+                        <Play size={23} fill="#000" />
+                    )}
                 </button>
             </div>
         </div>

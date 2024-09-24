@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom"
 
 import Sidebar from "../components/Sidebar"
 import Navbar from "../components/Navbar"
+import MusicPlayer from "../components/MusicPlayer"
 import styles from "./AppLayout.module.css"
 
 function AppLayout() {
@@ -12,6 +13,7 @@ function AppLayout() {
             <div className={styles.mainContent}>
                 <Outlet />
             </div>
+            <MusicPlayer />
         </div>
     )
 }

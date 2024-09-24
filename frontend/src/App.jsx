@@ -13,6 +13,7 @@ import Market from "./pages/Market"
 import EditProfile from "./components/EditProfile"
 import Error from "./components/ui/Error"
 import { UserProvider } from "./contexts/UserProvider"
+import { MusicProvider } from "./contexts/MusicProvider"
 
 const projectId = import.meta.env.VITE_WALLETCONNECT_ID
 
@@ -125,7 +126,9 @@ const router = createBrowserRouter([
 function App() {
     return (
         <UserProvider>
-            <RouterProvider router={router} />
+            <MusicProvider>
+                <RouterProvider router={router} />
+            </MusicProvider>
         </UserProvider>
     )
 }

@@ -1,0 +1,124 @@
+.musicPlayer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: hsl(0, 0%, 90%);
+  color: #424242;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 0.5px solid hsl(0 0% 26% / 0.5);
+  height: 110px;
+}
+
+.songInfo {
+  display: flex;
+  align-items: center;
+}
+
+.coverArt {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 0.3rem;
+  margin-right: 1rem;
+}
+
+.songTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.artistName {
+  font-size: 0.875rem;
+  color: hsl(0, 0%, 30%);
+  cursor: pointer;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.progressContainer {
+  width: 100%;
+  /* max-width: 32rem; */
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.progressBar {
+  width: 100%;
+  width: 32rem;
+  height: 0.5rem;
+  background-color: #424242;
+  border-radius: 9999px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.progressBar::-webkit-slider-thumb {
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  background-color: #48CFCB;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+
+.timeControl {
+  font-size: 0.9rem;
+}
+
+.playControl {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.controlButton {
+  background-color: transparent;
+  border: none;
+  color: #424242;
+  margin: 0 0.5rem;
+  cursor: pointer;
+}
+
+.playButton {
+  background-color: #424242;
+  color: #48CFCB;
+  border-radius: 9999px;
+  padding: 0.5rem;
+  margin: 0 1rem;
+  cursor: pointer;
+}
+
+.volumeControl {
+  display: flex;
+  align-items: center;
+}
+
+.volumeSlider {
+  width: 6rem;
+  height: 0.5rem;
+  background-color: #4b5563;
+  border-radius: 9999px;
+  appearance: none;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.volumeSlider::-webkit-slider-thumb {
+  appearance: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: #48CFCB;
+  border-radius: 9999px;
+  cursor: pointer;
+}
