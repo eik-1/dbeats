@@ -20,6 +20,7 @@ const query = gql`
 const url = import.meta.env.VITE_SUBGRAPH_URL
 
 function Market() {
+    
     const { data, status } = useQuery({
         queryKey: ["nfts"],
         queryFn: async () => await request(url, query),
@@ -42,7 +43,7 @@ function Market() {
                     ))}
                 </div>
             )}
-        </div>
+        </div> 
     )
 }
 

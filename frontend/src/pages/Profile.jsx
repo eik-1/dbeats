@@ -1,15 +1,38 @@
 import React, { useEffect } from "react"
 import { useWeb3ModalAccount } from "@web3modal/ethers/react"
 import { useNavigate } from "react-router-dom"
-
 import styles from "./Profile.module.css"
 import { useUser } from "../contexts/UserProvider"
+import ProfileCard from "../components/ProfileCard"
+import { useQuery } from "@tanstack/react-query"
+import { gql, request } from "graphql-request"
+
+const query = gql`
+    query MyQuery {
+        artist(id: "0x1abc133c222a185fede2664388f08ca12c208f76") {
+            nfts {
+                tokenURI
+                mintPrice
+                address
+            }
+        }
+    }
+`
+
+const url = import.meta.env.VITE_SUBGRAPH_URL
 
 function Profile() {
     const { address, isConnected } = useWeb3ModalAccount()
     const { user, fetchUser, applyForArtist } = useUser()
     const navigate = useNavigate()
 
+    const { data, status } = useQuery({
+        queryKey: ["nfts", address],
+        queryFn: async () => await request(url, query, { artistId: address }),
+        enabled: !!address, // Only run the query if the address is available
+    })
+
+    console.log(data)
     useEffect(() => {
         async function initializeUser() {
             if (address) {
@@ -72,6 +95,34 @@ function Profile() {
                 <h2 className={styles.sectionTitle}>About</h2>
                 <p className={styles.about}>{user.about}</p>
                 {/* Add more sections here as needed */}
+            </div>
+            <h1 className={styles.title}>Tracks Created</h1>
+            {/* <div className={styles.headings}>
+                <p className={styles.heading}>Track Name</p>
+                <p className={styles.heading}>Price</p>
+                <p className={styles.heading}>Sales</p>
+            </div> */}
+            <div>
+                {status === "pending" && (
+                    <div className={styles.notConnected}>Loading...</div>
+                )}
+                {status === "error" && (
+                    <div className={styles.notConnected}>
+                        Error occurred querying the Subgraph
+                    </div>
+                )}
+                {status === "success" && (
+                    <div className={styles.profileCardContent}>
+                        {data.artist.nfts.map((nft) => (
+                            <ProfileCard
+                                key={nft.tokenURI}
+                                uri={nft.tokenURI}
+                                mintprice={nft.mintPrice}
+                                address={nft.address}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     )
