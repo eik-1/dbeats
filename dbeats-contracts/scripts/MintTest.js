@@ -1,8 +1,8 @@
 require("dotenv").config();
-const NftAddress = "0xF3f111B7cF60D94798723e15993876cc39687dd2";
+const NftAddress = "0x4d4568fceb7668ab9ab0253fea8c8ed30b8400b7";
 const ethers = require('ethers');
 const {abi} = require('./abi');
-const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
 const Signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 const nftContractInstance = new ethers.Contract(NftAddress, abi, Signer);
 

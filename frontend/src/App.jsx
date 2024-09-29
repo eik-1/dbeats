@@ -87,7 +87,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "/profile",
-                element: <Profile />,
+                element: (
+                    <QueryClientProvider client={queryClient}>
+                        <Profile />
+                    </QueryClientProvider>
+                ),
                 errorElement: <Error />,
             },
             {
