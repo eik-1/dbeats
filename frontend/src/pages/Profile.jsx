@@ -7,9 +7,19 @@ import ProfileCard from "../components/ProfileCard"
 import { useQuery } from "@tanstack/react-query"
 import { gql, request } from "graphql-request"
 
+
+const url = import.meta.env.VITE_SUBGRAPH_URL
+
+function Profile() {
+    const { address, isConnected } = useWeb3ModalAccount()
+    const { user, fetchUser, applyForArtist } = useUser()
+    const navigate = useNavigate()
+
+ 
 const query = gql`
-    query MyQuery {
-        artist(id: "0x1abc133c222a185fede2664388f08ca12c208f76") {
+    query MyQuery($artistId: String!) {
+        artist(id: $artistId) {
+            address
             nfts {
                 tokenURI
                 mintPrice
@@ -19,24 +29,35 @@ const query = gql`
     }
 `
 
-const url = import.meta.env.VITE_SUBGRAPH_URL
+    let newAddress;
 
-function Profile() {
-    const { address, isConnected } = useWeb3ModalAccount()
-    const { user, fetchUser, applyForArtist } = useUser()
-    const navigate = useNavigate()
+    if (address) {
+        newAddress = address.toLowerCase();
+    }
 
-    const { data, status } = useQuery({
-        queryKey: ["nfts", address],
-        queryFn: async () => await request(url, query, { artistId: address }),
-        enabled: !!address, // Only run the query if the address is available
-    })
+    const { data, status, error } = useQuery({
+        queryKey: ["nfts", newAddress],
+        queryFn: async () => {
+          if (address) {
+            console.log("Fetching data for artistId:", newAddress); // Log the artistId being used
+            try {
+              const result = await request(url, query, { artistId: newAddress });
+              console.log("Query result:", result); // Log the result of the query
+              return result;
+            } catch (err) {
+              console.error("Error fetching data:", err); // Log any errors
+              throw err;
+            }
+          }
+        },
+        enabled: !!newAddress, // Only run the query if the address is available
+      });
 
-    console.log(data)
     useEffect(() => {
         async function initializeUser() {
             if (address) {
                 const newUser = await fetchUser(address)
+                console.log("Fetched user:", newUser) // Log the fetched user
             }
         }
         initializeUser()
@@ -108,19 +129,25 @@ function Profile() {
                 )}
                 {status === "error" && (
                     <div className={styles.notConnected}>
-                        Error occurred querying the Subgraph
+                        Error occurred querying the Subgraph: {error.message}
                     </div>
                 )}
                 {status === "success" && (
                     <div className={styles.profileCardContent}>
-                        {data.artist.nfts.map((nft) => (
-                            <ProfileCard
-                                key={nft.tokenURI}
-                                uri={nft.tokenURI}
-                                mintprice={nft.mintPrice}
-                                address={nft.address}
-                            />
-                        ))}
+                        {data.artist ? (
+                            data.artist.nfts.map((nft) => (
+                                <ProfileCard
+                                    key={nft.tokenURI}
+                                    uri={nft.tokenURI}
+                                    mintprice={nft.mintPrice}
+                                    address={nft.address}
+                                />
+                            ))
+                        ) : (
+                            <div className={styles.notConnected}>
+                                No artist data found for the given address.
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
