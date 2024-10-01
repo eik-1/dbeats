@@ -20,7 +20,6 @@ const query = gql`
 const url = import.meta.env.VITE_SUBGRAPH_URL
 
 function Market() {
-    
     const { data, status } = useQuery({
         queryKey: ["nfts"],
         queryFn: async () => await request(url, query),
@@ -39,11 +38,11 @@ function Market() {
             {status === "success" && (
                 <div className={styles.nftList}>
                     {data.nfts.map((nft) => (
-                        <NFTCard id={nft.id} uri={nft.tokenURI} />
+                        <NFTCard key={nft.id} id={nft.id} uri={nft.tokenURI} />
                     ))}
                 </div>
             )}
-        </div> 
+        </div>
     )
 }
 

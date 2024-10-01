@@ -1,0 +1,73 @@
+.dialog {
+    background-color: #F5F5F5;
+    width: 400px;
+    height: 500px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.dialogContent {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.dialogHeading {
+    font-size: 2rem;
+}
+
+.songInfo {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 1rem;
+    border-bottom: 0.5px solid hsl(0 0% 26% / 0.5);;
+}
+  
+.coverArt {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 0.3rem;
+    margin-right: 1.5rem;
+}
+  
+.songTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+  
+.artistName {
+    font-size: 1rem;
+    color: hsl(0, 0%, 30%);
+    cursor: pointer;
+}
+
+.decisionButtons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.closeButton {
+    background-color: #424242;
+    color: #F5F5F5;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 3px;
+}
+
+.mintButton {
+    background-color: #48CFCB;
+    color: #F5F5F5;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 3px;
+}

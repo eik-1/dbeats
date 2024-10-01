@@ -41,6 +41,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
 }
 
 .progressContainer {
@@ -103,6 +104,8 @@
 .volumeControl {
   display: flex;
   align-items: center;
+  position: relative;
+  right: 10rem;
 }
 
 .volumeSlider {
@@ -122,4 +125,20 @@
   background-color: #48CFCB;
   border-radius: 9999px;
   cursor: pointer;
+}
+
+.mintButton {
+  background-color: #424242;
+  width: 5rem;
+  position: relative;
+  right: 5rem;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.8rem;
+  color: #F5F5F5;
+  transition: background-color 0.2s;
+}
+
+.mintButton:hover {
+  background-color: #000;
 }

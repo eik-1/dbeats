@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react"
 import { Play, Pause, SkipBack, SkipForward, Volume2 } from "lucide-react"
+
+import MintModal from "./MintModal"
 import styles from "./MusicPlayer.module.css"
 import { useMusic } from "../contexts/MusicProvider"
 
-function MusicPlayer({ onClose }) {
+function MusicPlayer() {
     const {
         currentTrack,
         isPlaying,
@@ -16,6 +18,7 @@ function MusicPlayer({ onClose }) {
     } = useMusic()
     const [currentTime, setCurrentTime] = useState(0)
     const [duration, setDuration] = useState(0)
+    const [isMintModalOpen, setIsMintModalOpen] = useState(false)
 
     useEffect(() => {
         const audio = audioRef.current
@@ -30,6 +33,14 @@ function MusicPlayer({ onClose }) {
             audio.removeEventListener("loadedmetadata", updateDuration)
         }
     }, [audioRef])
+
+    function handleMintClick() {
+        setIsMintModalOpen(true)
+    }
+
+    function handleCloseMintModal() {
+        setIsMintModalOpen(false)
+    }
 
     const togglePlay = () => {
         if (isPlaying) {
@@ -114,6 +125,13 @@ function MusicPlayer({ onClose }) {
                     className={styles.volumeSlider}
                 />
             </div>
+            <button onClick={handleMintClick} className={styles.mintButton}>
+                Mint
+            </button>
+            <MintModal
+                isOpen={isMintModalOpen}
+                onClose={handleCloseMintModal}
+            />
         </div>
     )
 }

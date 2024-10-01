@@ -11,10 +11,10 @@ function NFTCard({ id, uri }) {
     const [artist, setArtist] = useState("")
     const [loading, setLoading] = useState(true)
 
-    const { currentTrack, isPlaying, play, pauseTrack } = useMusic()
+    const { currentTrack, isPlaying, play, pauseTrack, setAddress } = useMusic()
 
     useEffect(() => {
-        const fetchNftData = async () => {
+        async function fetchNftData() {
             try {
                 const response = await fetch(uri)
                 const data = await response.json()
@@ -32,7 +32,7 @@ function NFTCard({ id, uri }) {
         fetchNftData()
     }, [uri])
 
-    const handlePlayClick = () => {
+    function handlePlayClick() {
         if (currentTrack && currentTrack.id === id && isPlaying) {
             pauseTrack()
         } else {
