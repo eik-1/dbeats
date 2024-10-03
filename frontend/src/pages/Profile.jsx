@@ -5,29 +5,11 @@ import styles from "./Profile.module.css"
 import { useUser } from "../contexts/UserProvider"
 import ProfileCard from "../components/ProfileCard"
 import { useQuery } from "@tanstack/react-query"
-import { gql, request } from "graphql-request"
-
-
-const url = import.meta.env.VITE_SUBGRAPH_URL
 
 function Profile() {
     const { address, isConnected } = useWeb3ModalAccount()
     const { user, fetchUser, applyForArtist } = useUser()
     const navigate = useNavigate()
-
- 
-const query = gql`
-    query MyQuery($artistId: String!) {
-        artist(id: $artistId) {
-            address
-            nfts {
-                tokenURI
-                mintPrice
-                address
-            }
-        }
-    }
-`
 
     let newAddress;
 
@@ -38,26 +20,27 @@ const query = gql`
     const { data, status, error } = useQuery({
         queryKey: ["nfts", newAddress],
         queryFn: async () => {
-          if (address) {
-            console.log("Fetching data for artistId:", newAddress); // Log the artistId being used
-            try {
-              const result = await request(url, query, { artistId: newAddress });
-              console.log("Query result:", result); // Log the result of the query
-              return result;
-            } catch (err) {
-              console.error("Error fetching data:", err); // Log any errors
-              throw err;
+            if (newAddress) {
+                console.log("Fetching data for artistId:", newAddress);
+                try {
+                    const response = await fetch(`http://localhost:3000/userNfts?walletAddress=${newAddress}`);
+                    const result = await response.json();
+                    console.log("Response from server:", result);
+                    return result;
+                } catch (err) {
+                    console.error("Error fetching data:", err);
+                    throw err;
+                }
             }
-          }
         },
-        enabled: !!newAddress, // Only run the query if the address is available
-      });
+        enabled: !!newAddress,
+    });
 
     useEffect(() => {
         async function initializeUser() {
             if (address) {
                 const newUser = await fetchUser(address)
-                console.log("Fetched user:", newUser) // Log the fetched user
+                console.log("Fetched user:", newUser) 
             }
         }
         initializeUser()
@@ -118,18 +101,13 @@ const query = gql`
                 {/* Add more sections here as needed */}
             </div>
             <h1 className={styles.title}>Tracks Created</h1>
-            {/* <div className={styles.headings}>
-                <p className={styles.heading}>Track Name</p>
-                <p className={styles.heading}>Price</p>
-                <p className={styles.heading}>Sales</p>
-            </div> */}
             <div>
                 {status === "pending" && (
                     <div className={styles.notConnected}>Loading...</div>
                 )}
                 {status === "error" && (
                     <div className={styles.notConnected}>
-                        Error occurred querying the Subgraph: {error.message}
+                        Error occurred querying the server: {error.message}
                     </div>
                 )}
                 {status === "success" && (

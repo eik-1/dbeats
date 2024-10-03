@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react"
-import { Play, Pause } from "lucide-react"
-import styles from "./ProfileCard.module.css"
 import { Skeleton } from "./ui/Skeleton"
-import { useMusic } from "../contexts/MusicProvider"
-import alchemyFetch from "../Utils/AlchemyFetch"
+import styles from "./ProfileCard.module.css"
+// import { useMusic } from "../contexts/MusicProvider"
+// import alchemyFetch from "../Utils/AlchemyFetch"
 
 function ProfileCard({ id, uri , mintprice, address}) {
     const [name, setName] = useState("")
@@ -15,38 +14,27 @@ function ProfileCard({ id, uri , mintprice, address}) {
 
     // const { currentTrack, isPlaying, play, pauseTrack } = useMusic()
 
-
-
-    // ******************************************************************
-    // fetch sales and number of ticketsremaining from smart contract 
-    // *********************************************************************
-
-
-
     useEffect(() => {
         const fetchNftData = async () => {
             try {
-                // console.log("rui", uri)
-                const response = await fetch(uri)
-                // console.log("response", response)
-                const data = await response.json()
-                setName(data.name)
-                setImageUrl(data.image)
-                // setMusicUrl(data.animation_url)
-                setArtist(data.attributes[0].value)
-                const numberOfOwners = await alchemyFetch(address)
-                setNumberOfOwners(numberOfOwners)
-                
-            } catch (error) {
-                console.error("Error fetching NFT data:", error)
-            } finally {
-                setLoading(false)
-            }
-            
-        }
+                // Fetch data from the Express server endpoint
+                const response = await fetch(`http://localhost:3000/nftData?uri=${encodeURIComponent(uri)}&address=${address}`);
+                const data = await response.json();
 
-        fetchNftData()
-    }, [uri])
+                // Update state with the fetched data
+                setName(data.name);
+                setImageUrl(data.image);
+                setArtist(data.artist);
+                setNumberOfOwners(data.numberOfOwners);
+            } catch (error) {
+                console.error("Error fetching NFT data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchNftData();
+    }, [uri, address]);
 
     // const handlePlayClick = () => {
     //     if (currentTrack && currentTrack.id === id && isPlaying) {
