@@ -43,7 +43,7 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         uint256 mintPrice,
         uint256 platformFeePercentage,
         address platformWalletAddress,
-        string memory  genre
+        string memory genre
     ) ERC721(_name, _symbol) {
         _uri = _newTokenURI;
         _artistAddress = artistAddress;
@@ -73,7 +73,9 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         _platformFeePercentage = _newPlatformFeePercent;
     }
 
-    function updatePlatformWalletAddress(address _newPlatformWalletAddress) external onlyAdmin {
+    function updatePlatformWalletAddress(
+        address _newPlatformWalletAddress
+    ) external onlyAdmin {
         _platformWalletAddress = _newPlatformWalletAddress;
     }
 
@@ -100,13 +102,9 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         super._burn(tokenId);
     }
 
-        function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC721, ERC721URIStorage)
-        returns (bool)
-    {
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view override(ERC721, ERC721URIStorage) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
-
 }

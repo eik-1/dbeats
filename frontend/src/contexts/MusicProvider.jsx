@@ -5,12 +5,7 @@ const MusicContext = createContext()
 function MusicProvider({ children }) {
     const [currentTrack, setCurrentTrack] = useState(null)
     const [isPlaying, setIsPlaying] = useState(false)
-    const [musicAddress, setMusicAddress] = useState(null)
     const audioRef = useRef(new Audio())
-
-    function setAddress({ address }) {
-        setMusicAddress(address)
-    }
 
     function play(track) {
         if (currentTrack && currentTrack.id === track.id) {
@@ -51,7 +46,6 @@ function MusicProvider({ children }) {
                 resumeTrack,
                 seekTo,
                 setVolume,
-                setAddress,
                 audioRef,
             }}
         >

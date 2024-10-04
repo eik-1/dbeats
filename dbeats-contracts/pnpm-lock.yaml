@@ -51,12 +51,12 @@ importers:
       ethers:
         specifier: ^6.4.0
         version: 6.13.2
+      hardhat-contract-sizer:
+        specifier: ^2.10.0
+        version: 2.10.0(hardhat@2.22.6(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.5.4))(typescript@5.5.4))
       hardhat-gas-reporter:
-        specifier: ^1.0.8
+        specifier: ^1.0.10
         version: 1.0.10(hardhat@2.22.6(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.5.4))(typescript@5.5.4))
-      prettier:
-        specifier: ^3.3.3
-        version: 3.3.3
       solidity-coverage:
         specifier: ^0.8.0
         version: 0.8.12(hardhat@2.22.6(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.5.4))(typescript@5.5.4))
@@ -68,6 +68,10 @@ packages:
 
   '@adraffy/ens-normalize@1.10.1':
     resolution: {integrity: sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==}
+
+  '@colors/colors@1.5.0':
+    resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
+    engines: {node: '>=0.1.90'}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -762,6 +766,10 @@ packages:
     resolution: {integrity: sha512-7Qg2Jrep1S/+Q3EceiZtQcDPWxhAvBw+ERf1162v4sikJrvojMHFqXt8QIVha8UlH9rgU0BeWPytZ9/TzYqlUw==}
     engines: {node: '>=6'}
 
+  cli-table3@0.6.5:
+    resolution: {integrity: sha512-+W/5efTR7y5HRD7gACw9yQjqMVvEMLBHmboM/kPWam+H+Hmyrgjh6YncVKK122YZkXrLudzTuAukUw9FnMf7IQ==}
+    engines: {node: 10.* || >= 12.*}
+
   cliui@7.0.4:
     resolution: {integrity: sha512-OcRE68cOsVMXp1Yvonl/fzkQOyjLSu/8bhPDfQt0e0/Eb283TKP20Fs2MqoPsr9SwA595rRCA+QMzYc9nBP+JQ==}
 
@@ -1141,6 +1149,11 @@ packages:
     resolution: {integrity: sha512-vafaFqs8MZkRrSX7sFVUdo3ap/eNiLnb4IakshzvP56X5Nr1iGKAIqdX6tMlm6HcNRIkr6AxO5jFEoJzzpT8aQ==}
     engines: {node: '>=0.4.7'}
     hasBin: true
+
+  hardhat-contract-sizer@2.10.0:
+    resolution: {integrity: sha512-QiinUgBD5MqJZJh1hl1jc9dNnpJg7eE/w4/4GEnrcmZJJTDbVFNe3+/3Ep24XqISSkYxRz36czcPHKHd/a0dwA==}
+    peerDependencies:
+      hardhat: ^2.0.0
 
   hardhat-gas-reporter@1.0.10:
     resolution: {integrity: sha512-02N4+So/fZrzJ88ci54GqwVA3Zrf0C9duuTyGt0CFRIh/CdNwbnTgkXkRfojOMLBQ+6t+lBIkgbsOtqMvNwikA==}
@@ -1568,11 +1581,6 @@ packages:
   prettier@2.8.8:
     resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
     engines: {node: '>=10.13.0'}
-    hasBin: true
-
-  prettier@3.3.3:
-    resolution: {integrity: sha512-i2tDNA0O5IrMO757lfrdQZCc2jPNDVntV0m/+4whiDfWaTKfMNgR7Qz0NAeGz/nRqF4m5/6CLzbP4/liHt12Ew==}
-    engines: {node: '>=14'}
     hasBin: true
 
   process-nextick-args@2.0.1:
@@ -2070,6 +2078,9 @@ packages:
 snapshots:
 
   '@adraffy/ens-normalize@1.10.1': {}
+
+  '@colors/colors@1.5.0':
+    optional: true
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -2983,6 +2994,12 @@ snapshots:
     optionalDependencies:
       colors: 1.4.0
 
+  cli-table3@0.6.5:
+    dependencies:
+      string-width: 4.2.3
+    optionalDependencies:
+      '@colors/colors': 1.5.0
+
   cliui@7.0.4:
     dependencies:
       string-width: 4.2.3
@@ -3484,6 +3501,13 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.1
 
+  hardhat-contract-sizer@2.10.0(hardhat@2.22.6(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.5.4))(typescript@5.5.4)):
+    dependencies:
+      chalk: 4.1.2
+      cli-table3: 0.6.5
+      hardhat: 2.22.6(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.5.4))(typescript@5.5.4)
+      strip-ansi: 6.0.1
+
   hardhat-gas-reporter@1.0.10(hardhat@2.22.6(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.5.4))(typescript@5.5.4)):
     dependencies:
       array-uniq: 1.0.3
@@ -3923,8 +3947,6 @@ snapshots:
   prelude-ls@1.1.2: {}
 
   prettier@2.8.8: {}
-
-  prettier@3.3.3: {}
 
   process-nextick-args@2.0.1: {}
 

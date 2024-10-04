@@ -1,12 +1,15 @@
+import { gql, request } from "graphql-request";
+import { Network, Alchemy } from "alchemy-sdk";
+import cors from "cors";
 import express from "express";
+import axios from "axios";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
-import cors from "cors";
-import { gql, request } from "graphql-request";
+
 import userRouter from "./routes/users.js";
-import axios from "axios";
-import { Network, Alchemy } from "alchemy-sdk";
+
+const app = express();
 
 const port = 3000;
 const url = process.env.SUBGRAPH_URL;
@@ -15,7 +18,6 @@ const settings = {
   apiKey: process.env.ALCHEMY_API_KEY,
   network: Network.ARB_SEPOLIA,
 };
-
 const alchemy = new Alchemy(settings);
 
 const alchemyFetch = async (address) => {
@@ -25,9 +27,6 @@ const alchemyFetch = async (address) => {
 
   return numberOfOwners;
 };
-
-const app = express();
-dotenv.config();
 
 //Middleware
 app.use(cors());
