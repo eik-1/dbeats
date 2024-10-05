@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import userRouter from "./routes/users.js";
+import nftRouter from "./routes/nft.js";
 
 const app = express();
 
@@ -40,6 +41,7 @@ mongoose.connect(
 
 //Routes
 app.use("/user", userRouter);
+app.use("/nft", nftRouter);
 
 app.get("/userNfts", async (req, res) => {
   const walletAddress = req.query.walletAddress.toLowerCase();

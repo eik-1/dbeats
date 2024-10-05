@@ -131,6 +131,7 @@ function MusicPlayer() {
             <MintModal
                 isOpen={isMintModalOpen}
                 onClose={handleCloseMintModal}
+                currentTrack={currentTrack}
             />
         </div>
     )

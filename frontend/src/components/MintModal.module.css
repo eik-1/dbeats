@@ -1,6 +1,6 @@
 .dialog {
     background-color: #F5F5F5;
-    width: 400px;
+    width:max-content;
     height: 500px;
     padding: 20px;
     border-radius: 8px;
@@ -45,7 +45,32 @@
     cursor: pointer;
 }
 
+.detail {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.detailHeading {
+    /* font-size: 1.2rem; */
+    font-weight: 600;
+}
+
+/* .detailValue {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+} */
+
+.copy {
+    cursor: pointer;
+}
+
 .decisionButtons {
+    position: absolute;
+    bottom: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
