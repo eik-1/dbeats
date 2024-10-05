@@ -16,21 +16,22 @@ function NFTCard({ id, uri }) {
     useEffect(() => {
         async function fetchNftData() {
             try {
-                const response = await fetch(uri)
-                const data = await response.json()
-                setName(data.name)
-                setImageUrl(data.image)
-                setMusicUrl(data.animation_url)
-                setArtist(data.attributes[0].value)
+                const response = await fetch(`http://localhost:3000/nftMetadata?uri=${encodeURIComponent(uri)}`);
+                const data = await response.json();
+                console.log("nftcard data: ", data);
+                setName(data.name);
+                setImageUrl(data.imageUrl);
+                setMusicUrl(data.animationUrl);
+                setArtist(data.attributes[0].value);
             } catch (error) {
-                console.error("Error fetching NFT data:", error)
+                console.error("Error fetching NFT data:", error);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
         }
 
-        fetchNftData()
-    }, [uri])
+        fetchNftData();
+    }, [uri]);
 
     function handlePlayClick() {
         if (currentTrack && currentTrack.id === id && isPlaying) {
