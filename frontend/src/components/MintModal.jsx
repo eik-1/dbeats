@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react"
 import axios from "axios"
+import { ethers } from "ethers"
 import { Copy } from "lucide-react"
 
 import styles from "./MintModal.module.css"
+import mintNFT from "../Utils/mintNFT.js"
 
 const BASE_URL = "http://localhost:3000"
 
@@ -34,20 +36,12 @@ function MintModal({ isOpen, onClose, currentTrack }) {
 
     async function handleMint() {
         setIsMinting(true)
-        const address = currentTrack.id
-        const quantity = 1
         try {
-            const response = await axios.post(`${BASE_URL}/nft/mint`, {
-                address,
-                quantity,
-            })
-            console.log("Minting successful:", response.data)
-            onClose()
+            const priceInWei = ethers.parseEther(price)
+            const receipt = await mintNFT(currentTrack.id, priceInWei)
+            console.log("Minting successful:", receipt)
         } catch (error) {
-            console.error(
-                "Error minting NFT:",
-                error.response ? error.response.data : error.message,
-            )
+            console.error("Error minting NFT:", error)
         } finally {
             setIsMinting(false)
         }

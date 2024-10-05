@@ -24,23 +24,4 @@ router.get("/price/:address", async (req, res) => {
   }
 });
 
-router.post("/mint", async (req, res) => {
-  try {
-    const { address, quantity } = req.body;
-    console.log("Minting NFT with address:", address, "quantity:", quantity);
-    const contract = new ethers.Contract(address, dbeatsNftABI, signer);
-    const mintPrice = await contract._mintPrice();
-    const tx = await contract.mint(signer.address, quantity, {
-      value: mintPrice,
-    });
-    const receipt = await tx.wait();
-    res.json({ success: true, transactionHash: receipt });
-  } catch (error) {
-    console.error("Minting error:", error);
-    res
-      .status(500)
-      .json({ error: "Error minting NFT", details: error.message });
-  }
-});
-
 export default router;
