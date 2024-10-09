@@ -1,29 +1,26 @@
 import React from "react"
 import { useQuery } from "@tanstack/react-query"
-import { gql, request } from "graphql-request"
 import styles from "./Market.module.css"
 import NFTCard from "../components/NFTCard"
 
-const query = gql`
-    {
-        nfts(skip: 25) {
-            id
-            address
-            artist {
-                id
-            }
-            tokenURI
-        }
-    }
-`
-
-const url = import.meta.env.VITE_SUBGRAPH_URL
 
 function Market() {
-    const { data, status } = useQuery({
-        queryKey: ["nfts"],
-        queryFn: async () => await request(url, query),
-    })
+
+const { data, status, error } = useQuery({
+    queryKey: ["nfts"],
+    queryFn: async () => {
+    
+            console.log("Fetching data for artistId:");
+            try {
+                const response = await fetch(`http://localhost:3000/nfts`);
+                const result = await response.json();
+                return result;
+            } catch (err) {
+                console.error("Error fetching data:", err);
+                throw err;
+        }
+    }
+});
 
     return (
         <div className={styles.marketContainer}>
@@ -32,7 +29,7 @@ function Market() {
             )}
             {status === "error" && (
                 <div className={styles.notConnected}>
-                    Error occurred querying the Subgraph
+                    Error occurred querying the Subgraph: {error.message}
                 </div>
             )}
             {status === "success" && (
