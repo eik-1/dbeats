@@ -5,6 +5,8 @@ import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
+import './Platform.sol';
+import './FeeManager.sol';
 
 contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
@@ -16,6 +18,7 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
     address public _artistAddress;
     address public _platformWalletAddress; //can set to private
     string public _genre;
+    FeeManager private feeManager;
 
     event Minted(address indexed to, uint256 indexed tokenId, string uri);
 
@@ -41,22 +44,23 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         string memory _name,
         string memory _symbol,
         uint256 mintPrice,
-        uint256 platformFeePercentage,
-        address platformWalletAddress,
-        string memory genre
+        string memory genre,
+        address feeManagerAddress,
+        address platformWalletAddress
     ) ERC721(_name, _symbol) {
         _uri = _newTokenURI;
         _artistAddress = artistAddress;
         _mintPrice = mintPrice;
-        _platformFeePercentage = platformFeePercentage;
         _platformWalletAddress = platformWalletAddress;
         _genre = genre;
+        feeManager = FeeManager(feeManagerAddress);
+        
     }
-
-    function mint(address to, uint256 quantity) public payable {
+            
+        function mint(address to, uint256 quantity) public payable {
         require(quantity > 0, 'Quantity must be greater than 0');
         require(msg.value >= quantity * _mintPrice, 'Insufficient ETH sent');
-        uint256 fee = (msg.value * _platformFeePercentage) / 100;
+        uint256 fee = (msg.value * feeManager.getPlatformFeePercentage()) / 100;
         payable(_platformWalletAddress).transfer(fee);
         for (uint256 i = 0; i < quantity; i++) {
             _tokenIdCounter.increment();
@@ -67,17 +71,6 @@ contract DBeatsNFT is ERC721, ERC721URIStorage, Ownable {
         }
     }
 
-    function updatePlatformFee(
-        uint256 _newPlatformFeePercent
-    ) external onlyAdmin {
-        _platformFeePercentage = _newPlatformFeePercent;
-    }
-
-    function updatePlatformWalletAddress(
-        address _newPlatformWalletAddress
-    ) external onlyAdmin {
-        _platformWalletAddress = _newPlatformWalletAddress;
-    }
 
     function withdraw() public onlyArtist {
         require(msg.sender == _artistAddress, 'Only the artist can withdraw');
