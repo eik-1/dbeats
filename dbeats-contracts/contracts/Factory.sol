@@ -6,13 +6,14 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/access/AccessControl.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import './DBeatsNFT.sol';
+import './FeeManager.sol';
 
 contract DBeatsFactory is Ownable, AccessControl {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenCounter;
     address public platformWalletAddress;
-    uint256 public platformFeePercentage;
+    FeeManager private feeManager;
 
     mapping(address => address[]) public nftsByCreator;
 
@@ -32,15 +33,16 @@ contract DBeatsFactory is Ownable, AccessControl {
 
     constructor(
         address _platformWalletAddress,
-        uint256 _platformFeePercentage
-    ) AccessControl() {
+        address _feeManagerAddress
+    ) AccessControl() Ownable() {
         // Grant the admin role to the contract deployer
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(ADMIN_ROLE, msg.sender); 
         platformWalletAddress = _platformWalletAddress;
-        platformFeePercentage = _platformFeePercentage;
+        feeManager = FeeManager(_feeManagerAddress);
     }
 
-    // // Function to add a user to a specific role
+    // Function to add a user to a specific role
     function addUserToRole(bytes32 role, address account) public onlyOwner {
         grantRole(role, account);
     }
@@ -62,11 +64,11 @@ contract DBeatsFactory is Ownable, AccessControl {
     // Function to create a new NFT
     function createNFT(
         address _artistAddress,
-        string memory _newTokenURI,
-        string memory name,
-        string memory symbol,
+        string calldata _newTokenURI,
+        string calldata name,
+        string calldata symbol,
         uint256 mintPrice,
-        string memory _genre
+        string calldata _genre
     ) public {
         // Check that the caller has the artist role
         require(hasRole(ARTIST_ROLE, msg.sender), 'Caller is not an artist');
@@ -79,9 +81,9 @@ contract DBeatsFactory is Ownable, AccessControl {
             name,
             symbol,
             mintPrice,
-            platformFeePercentage,
-            platformWalletAddress,
-            _genre
+            _genre,
+            address(feeManager),
+            platformWalletAddress
         );
 
         emit NewNFT(
@@ -109,10 +111,7 @@ contract DBeatsFactory is Ownable, AccessControl {
         return _tokenCounter.current();
     }
 
-    //Function to update platform percentage fee
-    function updatePlatformFee(
-        uint256 _newPlatformFeePercent
-    ) external onlyOwner {
-        platformFeePercentage = _newPlatformFeePercent;
+    function getPlatformFeePercentage() public view returns (uint256) {
+        return feeManager.getPlatformFeePercentage();
     }
 }

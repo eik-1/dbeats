@@ -18,12 +18,19 @@ module.exports = {
             chainId: 421614,
             gasPrice: 20000000000, // 20 Gwei
         },
+        sepolia: {
+            allowUnlimitedContractSize: true,
+            url: process.env.SEPOLIA_RPC_URL,
+            accounts: [process.env.PRIVATE_KEY],
+            chainId: 11155111,
+            gasPrice: 20000000000, // 20 Gwei
+        },
     },
     solidity: '0.8.24',
     settings: {
         optimizer: {
             enabled: true,
-            runs: 50,
+            runs: 200,
             details: { yul: false },
         },
     },
