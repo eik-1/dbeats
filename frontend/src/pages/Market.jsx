@@ -4,14 +4,16 @@ import styles from "./Market.module.css"
 import NFTCard from "../components/NFTCard"
 
 function Market() {
-    const { data, status, error } = useQuery({
-        queryKey: ["nfts"],
-        queryFn: async () => {
-            console.log("Fetching data for artistId:")
+
+const { data, status, error } = useQuery({
+    queryKey: ["nfts"],
+    queryFn: async () => {
+    
             try {
-                const response = await fetch(`http://localhost:3000/nft/getAll`)
-                const result = await response.json()
-                return result
+                console.log("Fetching data for artistId:");
+                const response = await fetch(`http://localhost:3000/nfts`);
+                const result = await response.json();
+                return result;
             } catch (err) {
                 console.error("Error fetching data:", err)
                 throw err
