@@ -1,5 +1,9 @@
 import axios from "axios";
+import dotenv from "dotenv";
 import { gql, request } from "graphql-request";
+dotenv.config();
+
+const url = process.env.SUBGRAPH_URL;
 
 export const getNfts = async (req, res) => {
   const query = gql`
