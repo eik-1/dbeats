@@ -1,5 +1,5 @@
 export const factoryContractAddress =
-    "0x2242cF684DAC41CC45a8B07eF5E027dc28322e49"
+    "0xCbDB0736971657049a02007c503c70C571bd3970"
 
 export const factoryABI = [
     {
