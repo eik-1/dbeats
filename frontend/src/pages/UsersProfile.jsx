@@ -2,14 +2,37 @@ import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
 import styles from "./UsersProfile.module.css"
+import ProfileCard from "../components/ProfileCard"
 import { useUser } from "../contexts/UserProvider"
 
 function UsersProfile() {
     const { searchUsers } = useUser()
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [nftData, setNftData] = useState(null)
+    const [queryStatus, setQueryStatus] = useState("idle")
+    const [queryError, setQueryError] = useState(null)
 
     const { name } = useParams()
+
+    useEffect(() => {
+        if (user && user.walletAddress) {
+            setQueryStatus("pending")
+            fetch(
+                `http://localhost:3000/userNfts?walletAddress=${user.walletAddress}`,
+            )
+                .then((response) => response.json())
+                .then((result) => {
+                    setNftData(result)
+                    setQueryStatus("success")
+                })
+                .catch((err) => {
+                    console.error("Error fetching data:", err)
+                    setQueryError(err)
+                    setQueryStatus("error")
+                })
+        }
+    }, [user])
 
     useEffect(() => {
         async function initializeUser() {
@@ -48,7 +71,35 @@ function UsersProfile() {
             <div className={styles.profileContent}>
                 <h2 className={styles.sectionTitle}>About</h2>
                 <p className={styles.about}>{user.about}</p>
-                {/* Add more sections here as needed */}
+            </div>
+            <h1 className={styles.title}>Tracks Created</h1>
+            <div>
+                {queryStatus === "pending" && (
+                    <div className={styles.notConnected}>Loading...</div>
+                )}
+                {queryStatus === "error" && (
+                    <div className={styles.notConnected}>
+                        Error occurred querying the server: {queryError.message}
+                    </div>
+                )}
+                {queryStatus === "success" && (
+                    <div className={styles.profileCardContent}>
+                        {nftData.artist ? (
+                            nftData.artist.nfts.map((nft) => (
+                                <ProfileCard
+                                    key={nft.tokenURI}
+                                    uri={nft.tokenURI}
+                                    mintprice={nft.mintPrice}
+                                    address={nft.address}
+                                />
+                            ))
+                        ) : (
+                            <div className={styles.notConnected}>
+                                No artist data found for the given address.
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     )

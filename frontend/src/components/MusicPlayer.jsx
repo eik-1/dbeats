@@ -9,7 +9,6 @@ function MusicPlayer() {
     const {
         currentTrack,
         isPlaying,
-        play,
         pauseTrack,
         resumeTrack,
         seekTo,

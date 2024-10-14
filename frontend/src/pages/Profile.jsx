@@ -1,46 +1,49 @@
 import React, { useEffect } from "react"
 import { useWeb3ModalAccount } from "@web3modal/ethers/react"
 import { useNavigate } from "react-router-dom"
+import { useQuery } from "@tanstack/react-query"
+
 import styles from "./Profile.module.css"
 import { useUser } from "../contexts/UserProvider"
 import ProfileCard from "../components/ProfileCard"
-import { useQuery } from "@tanstack/react-query"
 
 function Profile() {
     const { address, isConnected } = useWeb3ModalAccount()
     const { user, fetchUser, applyForArtist } = useUser()
     const navigate = useNavigate()
 
-    let newAddress;
+    let newAddress
 
     if (address) {
-        newAddress = address.toLowerCase();
+        newAddress = address.toLowerCase()
     }
 
     const { data, status, error } = useQuery({
         queryKey: ["nfts", newAddress],
         queryFn: async () => {
             if (newAddress) {
-                console.log("Fetching data for artistId:", newAddress);
+                console.log("Fetching data for artistId:", newAddress)
                 try {
-                    const response = await fetch(`http://localhost:3000/userNfts?walletAddress=${newAddress}`);
-                    const result = await response.json();
-                    console.log("Response from server:", result);
-                    return result;
+                    const response = await fetch(
+                        `http://localhost:3000/userNfts?walletAddress=${newAddress}`,
+                    )
+                    const result = await response.json()
+                    console.log("Response from server:", result)
+                    return result
                 } catch (err) {
-                    console.error("Error fetching data:", err);
-                    throw err;
+                    console.error("Error fetching data:", err)
+                    throw err
                 }
             }
         },
         enabled: !!newAddress,
-    });
+    })
 
     useEffect(() => {
         async function initializeUser() {
             if (address) {
                 const newUser = await fetchUser(address)
-                console.log("Fetched user:", newUser) 
+                console.log("Fetched user:", newUser)
             }
         }
         initializeUser()
@@ -98,7 +101,6 @@ function Profile() {
             <div className={styles.profileContent}>
                 <h2 className={styles.sectionTitle}>About</h2>
                 <p className={styles.about}>{user.about}</p>
-                {/* Add more sections here as needed */}
             </div>
             <h1 className={styles.title}>Tracks Created</h1>
             <div>

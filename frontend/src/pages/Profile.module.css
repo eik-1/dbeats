@@ -128,10 +128,3 @@
     gap: 1rem;
     margin-bottom: 1rem;
 }
-
-.heading {
-    font-size: 1rem;
-    font-family: "Acid Grotesk Bold", sans-serif;
-    color: #424242;
-    text-align: center; /* Center align text in each column */
-}

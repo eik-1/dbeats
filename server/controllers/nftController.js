@@ -8,20 +8,21 @@ const url = process.env.SUBGRAPH_URL;
 export const getNfts = async (req, res) => {
   const query = gql`
     {
-      nfts(skip: 25) {
+      nfts {
         id
         address
         artist {
           id
         }
         tokenURI
+        genre
+        mintPrice
       }
     }
   `;
 
   try {
     const data = await request(url, query);
-    console.log(data);
     res.json(data);
   } catch (error) {
     console.error("Error fetching NFTs from subgraph:", error);

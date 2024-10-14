@@ -4,14 +4,14 @@ import styles from "./NFTCard.module.css"
 import { Skeleton } from "./ui/Skeleton"
 import { useMusic } from "../contexts/MusicProvider"
 
-function NFTCard({ id, uri }) {
+function NFTCard({ id, uri, price, genre }) {
     const [name, setName] = useState("")
     const [imageUrl, setImageUrl] = useState("")
     const [musicUrl, setMusicUrl] = useState("")
     const [artist, setArtist] = useState("")
     const [loading, setLoading] = useState(true)
 
-    const { currentTrack, isPlaying, play, pauseTrack, setAddress } = useMusic()
+    const { currentTrack, isPlaying, play, pauseTrack } = useMusic()
 
     useEffect(() => {
         async function fetchNftData() {
@@ -39,7 +39,7 @@ function NFTCard({ id, uri }) {
         if (currentTrack && currentTrack.id === id && isPlaying) {
             pauseTrack()
         } else {
-            play({ id, name, artist, musicUrl, imageUrl })
+            play({ id, name, artist, musicUrl, imageUrl, price, genre })
         }
     }
 
