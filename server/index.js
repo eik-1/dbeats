@@ -83,7 +83,7 @@ app.get("/nftData", async (req, res) => {
     // Combine data
     const data = {
       name: nftData.name,
-      image: nftData.image,
+      image: nftData.imageUrl,
       artist: nftData.attributes[0].value,
       numberOfOwners,
     };
@@ -92,6 +92,42 @@ app.get("/nftData", async (req, res) => {
   } catch (error) {
     console.error("Error fetching NFT data:", error);
     res.status(500).json({ error: "Failed to fetch NFT data" });
+  }
+});
+
+app.get("/nfts", async (req, res) => {
+  const query = gql`
+    {
+      nfts(skip: 0) {
+        id
+        address
+        artist {
+          id
+        }
+        tokenURI
+      }
+    }
+  `;
+
+  try {
+    const data = await request(url, query);
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching NFTs from subgraph:", error);
+    res.status(500).json({ error: "Failed to fetch NFTs" });
+  }
+});
+
+app.get("/nftMetadata", async (req, res) => {
+  const { uri } = req.query;
+
+  try {
+    const response = await axios.get(uri);
+    const nftData = response.data;
+    res.json(nftData);
+  } catch (error) {
+    console.error("Error fetching NFT metadata:", error);
+    res.status(500).json({ error: "Failed to fetch NFT metadata" });
   }
 });
 
