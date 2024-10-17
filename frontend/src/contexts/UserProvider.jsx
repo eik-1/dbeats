@@ -65,6 +65,18 @@ function UserProvider({ children }) {
         }
     }
 
+    async function addNftToUser(nftAddress) {
+        try {
+            const response = await axios.post(`${API_BASE_URL}/user/addNft`, {
+                walletAddress: address,
+                nftAddress,
+            })
+            setUser(response.data)
+        } catch (error) {
+            console.error("Error updating user:", error)
+        }
+    }
+
     async function applyForArtist() {
         try {
             const response = await axios.put(
@@ -87,6 +99,7 @@ function UserProvider({ children }) {
                 user,
                 loading,
                 updateUser,
+                addNftToUser,
                 createUser,
                 fetchUser,
                 searchUsers,

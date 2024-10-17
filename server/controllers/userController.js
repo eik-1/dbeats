@@ -60,3 +60,22 @@ export const updateUser = async (req, res) => {
       .json({ message: "Error updating user", error: error.message });
   }
 };
+
+export const addNftToUser = async (req, res) => {
+  const { walletAddress, nftAddress } = req.body;
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { walletAddress },
+      { $push: { mintedNfts: nftAddress } },
+      { new: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: "Error updating user", error: error.message });
+  }
+};

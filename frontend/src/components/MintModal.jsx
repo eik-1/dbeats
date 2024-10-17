@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { ethers } from "ethers"
 import { Copy } from "lucide-react"
 
+import { useUser } from "../contexts/UserProvider.jsx"
 import styles from "./MintModal.module.css"
 import mintNFT from "../Utils/mintNFT.js"
 
@@ -14,6 +15,7 @@ function MintModal({ isOpen, onClose, currentTrack }) {
     const [priceInUSD, setPriceInUSD] = useState("")
     const [isMinting, setIsMinting] = useState(false)
     const dialogRef = useRef(null)
+    const { user, addNftToUser } = useUser()
 
     const navigate = useNavigate()
 
@@ -58,6 +60,9 @@ function MintModal({ isOpen, onClose, currentTrack }) {
             console.error("Error minting NFT:", error)
         } finally {
             setIsMinting(false)
+            const nftAddress = currentTrack.id
+            await addNftToUser(nftAddress)
+            console.log("Saved to the database")
         }
     }
 

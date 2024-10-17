@@ -20,7 +20,6 @@ function NFTCard({ id, uri, price, genre }) {
                     `http://localhost:3000/nft/nftMetadata?uri=${encodeURIComponent(uri)}`,
                 )
                 const data = await response.json()
-                console.log("nftcard data: ", data)
                 setName(data.name)
                 setImageUrl(data.imageUrl)
                 setMusicUrl(data.animationUrl)

@@ -14,6 +14,7 @@ import EditProfile from "./components/EditProfile"
 import Error from "./components/ui/Error"
 import { UserProvider } from "./contexts/UserProvider"
 import { MusicProvider } from "./contexts/MusicProvider"
+import MyMusic from "./pages/MyMusic"
 
 const projectId = import.meta.env.VITE_WALLETCONNECT_ID
 
@@ -121,6 +122,11 @@ const router = createBrowserRouter([
                         <Market />
                     </QueryClientProvider>
                 ),
+                errorElement: <Error />,
+            },
+            {
+                path: "/my-music",
+                element: <MyMusic />,
                 errorElement: <Error />,
             },
         ],

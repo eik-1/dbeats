@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   isArtist: { type: Boolean, default: false },
   hasApplied: { type: Boolean, default: false },
   followersCount: { type: Number, default: 0 },
+  mintedNfts: { type: [String], default: [] },
 });
 
 const User = mongoose.model("User", userSchema);

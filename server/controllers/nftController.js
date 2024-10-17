@@ -30,6 +30,33 @@ export const getNfts = async (req, res) => {
   }
 };
 
+export const getNftDetails = async (req, res) => {
+  const { nftAddress } = req.body;
+  console.log("Address: ", nftAddress);
+  const query = gql`
+    query GetNftDetails($address: String!) {
+      nfts(where: { address: $address }) {
+        address
+        name
+        mintPrice
+        tokenURI
+        genre
+        artist {
+          id
+        }
+      }
+    }
+  `;
+  try {
+    const variables = { address: nftAddress };
+    const data = await request(url, query, variables);
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching details of the NFT", error);
+    res.status(500).json({ error: "Failed to fetch the details" });
+  }
+};
+
 export const getNftMetadata = async (req, res) => {
   const { uri } = req.query;
 

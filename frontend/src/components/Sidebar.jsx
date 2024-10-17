@@ -1,6 +1,6 @@
 import React from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Home, TrendingUp, Globe, User, Plus } from "lucide-react"
+import { Home, Music, Compass, User, Plus } from "lucide-react"
 import { useWeb3ModalAccount } from "@web3modal/ethers/react"
 
 import styles from "./Sidebar.module.css"
@@ -27,21 +27,23 @@ function Sidebar() {
                     to="/"
                 />
                 <SidebarItem
-                    icon={<TrendingUp size={25} strokeWidth={3} />}
-                    text="Viral Sounds"
-                    to="/trending"
-                />
-                <SidebarItem
-                    icon={<Globe size={25} strokeWidth={3} />}
+                    icon={<Compass size={25} strokeWidth={3} />}
                     text="Explore"
                     to="/market"
                 />
                 {isConnected && (
-                    <SidebarItem
-                        icon={<User size={25} strokeWidth={3} />}
-                        text="Profile"
-                        to="/profile"
-                    />
+                    <>
+                        <SidebarItem
+                            icon={<Music size={25} strokeWidth={3} />}
+                            text="My Music"
+                            to="/my-music"
+                        />
+                        <SidebarItem
+                            icon={<User size={25} strokeWidth={3} />}
+                            text="Profile"
+                            to="/profile"
+                        />
+                    </>
                 )}
             </nav>
             {isConnected && user?.isArtist && (
