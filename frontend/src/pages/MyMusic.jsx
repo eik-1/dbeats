@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import axios from "axios"
 import { useWeb3ModalAccount } from "@web3modal/ethers/react"
-
+import { Link } from "react-router-dom"
 import styles from "./MyMusic.module.css"
 import { useUser } from "../contexts/UserProvider"
 import NFTCard from "../components/NFTCard"
@@ -11,7 +11,7 @@ function MyMusic() {
 
     const { address, isConnected } = useWeb3ModalAccount()
     const { fetchUser } = useUser()
-
+    console.log("userNfts: ", userNfts)
     useEffect(() => {
         if (!isConnected || !address) return
         async function fetchNftAddresses() {
@@ -40,6 +40,7 @@ function MyMusic() {
             <h1 className={styles.heading}>Your Minted Tracks</h1>
             <div className={styles.nftList}>
                 {userNfts.map((nft) => (
+                    <Link to={`/track/${nft.address}`} state={{ address: nft.address }} key={nft.address} className={styles.profileCardContent}>
                     <NFTCard
                         key={nft.id}
                         id={nft.id}
@@ -47,6 +48,7 @@ function MyMusic() {
                         price={nft.mintPrice}
                         genre={nft.genre}
                     />
+                    </Link>
                 ))}
             </div>
         </div>

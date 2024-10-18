@@ -2,6 +2,7 @@ import React from "react"
 import { useQuery } from "@tanstack/react-query"
 import styles from "./Market.module.css"
 import NFTCard from "../components/NFTCard"
+import {Link} from "react-router-dom"
 
 function Market() {
     const { data, status, error } = useQuery({
@@ -32,6 +33,7 @@ function Market() {
             {status === "success" && (
                 <div className={styles.nftList}>
                     {data.nfts.map((nft) => (
+                        <Link to={`/track/${nft.address}`} state={{ address: nft.address }} key={nft.address} className={styles.profileCardContent}>
                         <NFTCard
                             key={nft.id}
                             id={nft.id}
@@ -39,6 +41,7 @@ function Market() {
                             price={nft.mintPrice}
                             genre={nft.genre}
                         />
+                         </Link>
                     ))}
                 </div>
             )}

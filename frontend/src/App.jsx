@@ -9,6 +9,7 @@ import Admin from "./pages/Admin"
 import Create from "./pages/Create"
 import UsersProfile from "./pages/UsersProfile"
 import Market from "./pages/Market"
+import TrackInfo from "./pages/TrackInfo"
 
 import EditProfile from "./components/EditProfile"
 import Error from "./components/ui/Error"
@@ -113,6 +114,11 @@ const router = createBrowserRouter([
             {
                 path: "/:name",
                 element: <UsersProfile />,
+                errorElement: <Error />,
+            },
+            {
+                path: "/track/:address",
+                element: <TrackInfo />,
                 errorElement: <Error />,
             },
             {

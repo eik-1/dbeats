@@ -69,6 +69,19 @@ app.get("/userNfts", async (req, res) => {
   }
 });
 
+
+app.get("/numberOfOwners", async (req, res) => {
+  try{
+    const { address } = req.query;
+    const numberOfOwners = await alchemyFetch(address);
+    res.json(numberOfOwners);
+  } catch (error) {
+    console.error("Error fetching NFT data:", error);
+    res.status(500).json({ error: "Failed to fetch NFT data" });
+  }
+}
+)
+
 app.get("/nftData", async (req, res) => {
   const { uri, address } = req.query;
 
