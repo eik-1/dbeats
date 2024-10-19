@@ -1,8 +1,7 @@
 import React, { useEffect } from "react"
 import { useWeb3ModalAccount } from "@web3modal/ethers/react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-
 import styles from "./Profile.module.css"
 import { useUser } from "../contexts/UserProvider"
 import ProfileCard from "../components/ProfileCard"
@@ -116,12 +115,14 @@ function Profile() {
                     <div className={styles.profileCardContent}>
                         {data.artist ? (
                             data.artist.nfts.map((nft) => (
+                                <Link to={`/track/${nft.address}`} state={{ address: nft.address }} key={nft.address} className={styles.profileCardContent}>
                                 <ProfileCard
                                     key={nft.tokenURI}
                                     uri={nft.tokenURI}
                                     mintprice={nft.mintPrice}
                                     address={nft.address}
-                                />
+                               />
+                                </Link>
                             ))
                         ) : (
                             <div className={styles.notConnected}>

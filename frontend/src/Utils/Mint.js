@@ -25,7 +25,6 @@ const Mint = async (props) => {
             props.name,
             props.symbol,
             props.price,
-            platformPercentageFee,
             props.genre
         );
         console.log("Estimated Gas: ", gasEstimate.toString());
@@ -36,7 +35,6 @@ const Mint = async (props) => {
             props.name,
             props.symbol,
             props.price,
-            platformPercentageFee,
             props.genre,
             {
                 gasLimit: gasEstimate,

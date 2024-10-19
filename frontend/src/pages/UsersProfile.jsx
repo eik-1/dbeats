@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-
+import { Link } from "react-router-dom"
 import styles from "./UsersProfile.module.css"
 import ProfileCard from "../components/ProfileCard"
 import { useUser } from "../contexts/UserProvider"
@@ -86,12 +86,14 @@ function UsersProfile() {
                     <div className={styles.profileCardContent}>
                         {nftData.artist ? (
                             nftData.artist.nfts.map((nft) => (
+                                <Link to={`/track/${nft.address}`} state={{ address: nft.address }} key={nft.address} className={styles.profileCardContent}>
                                 <ProfileCard
                                     key={nft.tokenURI}
                                     uri={nft.tokenURI}
                                     mintprice={nft.mintPrice}
                                     address={nft.address}
                                 />
+                                </Link>
                             ))
                         ) : (
                             <div className={styles.notConnected}>

@@ -62,7 +62,7 @@ const Create = () => {
       state.selectedTrack !== null;
 
     dispatch({ type: "SET_IS_FORM_VALID", isValid });
-  }, [state.musicImage, state.releaseName, state.genre, state.mintPrice, state.selectedTrack]);
+  }, [state.musicImage, state.releaseName, state.genre, state.mintPrice, state.selectedTrack, state.info]);
 
   useEffect(() => {
     if (state.ipfsImageUrl && state.ipfsTrackUrl) {
@@ -70,7 +70,7 @@ const Create = () => {
         try {
           const json = {
             name: state.releaseName,
-            description: "description",
+            description: state.info,
             image: state.ipfsImageUrl,
             imageUrl: state.platformIfpsImageUrl,
             animation_url: state.ipfsTrackUrl,
@@ -290,6 +290,29 @@ const Create = () => {
                 />
                 <p>Max 20MB. (.mp3, .wav)</p>
             </div>
+
+            {/* track info /description  Input */}
+            <div className={styles.inputGroup}>
+                <label htmlFor="info">6. Track Info</label>
+                <div className={styles.infoContainer}>
+                    <textarea
+                        type="text"
+                        id="info"
+                        name="info"
+                        placeholder="Track Description"
+                        className={styles.textarea}
+                        value={state.info}
+                        onChange={(e) =>
+                            dispatch({
+                                type: "SET_FIELD_VALUE",
+                                field: "info",
+                                value: e.target.value,
+                            })
+                        }
+                    />
+                </div>
+            </div>
+
 
             {/* Submit Button */}
             <button
