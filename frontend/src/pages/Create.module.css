@@ -108,6 +108,30 @@
     padding-right: 0.5rem;
 }
 
+.infoContainer {
+    display: flex;
+    width:1000px;
+    gap: 3rem;
+    justify-content: space-between;
+    padding-right: 15rem;
+}
+
+.textarea {
+    width: 100vw; /* Make the textarea span the full width */
+    height: 150px; /* Set a height that allows for multiple lines */
+    border: 0.5px solid hsl(0 0% 70% / 0.5);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    resize: vertical; /* Allow vertical resizing */
+    font-family: "Acid Grotesk Regular", sans-serif; /* Match your font */
+    font-size: 1rem; /* Set a comfortable font size */
+}
+
+.textarea:focus {
+    outline: none;
+    border: 0.5px solid hsl(0 0% 70% / 0.5);
+}
+
 .currencySymbol {
     color: #F5F5F5;
     font-size: 1rem;

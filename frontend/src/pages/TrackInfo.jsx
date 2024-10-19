@@ -60,6 +60,7 @@ function TrackInfo() {
         }
 
         fetchNftDetails()
+        console.log("nftData: ", nftData)
     }, [address])
 
     async function fetchExchangeRate(mintPrice) {
@@ -142,6 +143,8 @@ function TrackInfo() {
                             src={nftData.imageUrl}
                             alt={nftData.name}
                         />
+                        <p className="nft-description">{nftData.description}</p>
+
                         <p>Address: {address}</p>
                         <p>
                             Price: {nftDetails.nfts[0].mintPrice / 10 ** 18} ETH / $ {

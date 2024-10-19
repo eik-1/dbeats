@@ -54,3 +54,12 @@ h1{
 .playButton:hover{
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.534);
 }
+
+.nft-description{
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #000000;
+    width: 70%;
+    text-align: center;
+}
