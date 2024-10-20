@@ -14,12 +14,12 @@ function UsersProfile() {
     const [queryError, setQueryError] = useState(null)
 
     const { name } = useParams()
-
+    const serverUrl = import.meta.env.VITE_SERVER_URL
     useEffect(() => {
         if (user && user.walletAddress) {
             setQueryStatus("pending")
             fetch(
-                `http://localhost:3000/userNfts?walletAddress=${user.walletAddress}`,
+                `${serverUrl}/userNfts?walletAddress=${user.walletAddress}`,
             )
                 .then((response) => response.json())
                 .then((result) => {

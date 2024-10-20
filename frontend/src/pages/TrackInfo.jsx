@@ -7,7 +7,7 @@ import { fetchNumberOfOwners } from "../Utils/FetchNumberOfOwners"
 
 function TrackInfo() {
     const location = useLocation()
-    const { address } = location.state || {} 
+    const { address } = location.state || {}
     const [nftDetails, setNftDetails] = useState(null)
     const [nftData, setNftData] = useState(null)
     const [tokenURI, setTokenURI] = useState(null)
@@ -17,23 +17,20 @@ function TrackInfo() {
     const [currentTrack, setCurrentTrack] = useState(null)
     const [numberOfOwners, setNumberOfOwners] = useState(null)
     const [priceInUSD, setPriceInUSD] = useState(null)
-
+    const serverUrl = import.meta.env.VITE_SERVER_URL
     const { play, pauseTrack } = useMusic()
 
     useEffect(() => {
         const fetchNftDetails = async () => {
             if (address) {
                 try {
-                    const response = await fetch(
-                        `http://localhost:3000/nft/getOne`,
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({ nftAddress: address }),
+                    const response = await fetch(`${serverUrl}/nft/getOne`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
                         },
-                    )
+                        body: JSON.stringify({ nftAddress: address }),
+                    })
                     if (!response.ok) {
                         throw new Error("Network response was not ok")
                     }
@@ -47,7 +44,7 @@ function TrackInfo() {
 
                     await fetchExchangeRate(data.nfts[0].mintPrice)
 
-                    await fetchNftData(data.nfts[0].tokenURI) 
+                    await fetchNftData(data.nfts[0].tokenURI)
                 } catch (err) {
                     setError(err.message)
                 } finally {
@@ -77,7 +74,7 @@ function TrackInfo() {
             const response = await fetch(url, options)
             const data = await response.json()
             const exchangeRate = data.ethereum.usd
-            const usdPrice = parseFloat(mintPrice / 10 ** 18) * exchangeRate 
+            const usdPrice = parseFloat(mintPrice / 10 ** 18) * exchangeRate
             setPriceInUSD(usdPrice.toFixed(2))
         } catch (error) {
             console.error("Error fetching exchange rate:", error)
@@ -88,10 +85,10 @@ function TrackInfo() {
     async function fetchNftData(tokenURI) {
         if (tokenURI) {
             try {
-                const response = await fetch(tokenURI)
+                const encodedUrl = encodeURIComponent(tokenURI);
+                const response = await fetch(`${serverUrl}/getData?uri=${encodedUrl}`)
                 const data = await response.json()
                 setNftData(data)
-                console.log("nftData: ", data)
             } catch (err) {
                 setError(err.message)
             } finally {
@@ -147,9 +144,8 @@ function TrackInfo() {
 
                         <p>Address: {address}</p>
                         <p>
-                            Price: {nftDetails.nfts[0].mintPrice / 10 ** 18} ETH / $ {
-                                priceInUSD
-                            }
+                            Price: {nftDetails.nfts[0].mintPrice / 10 ** 18} ETH
+                            / $ {priceInUSD}
                         </p>
                         <p>Number of copies sold: {numberOfOwners}</p>
                         <button

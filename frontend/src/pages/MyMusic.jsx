@@ -8,7 +8,7 @@ import NFTCard from "../components/NFTCard"
 
 function MyMusic() {
     const [userNfts, setUserNfts] = useState([])
-
+    const serverUrl = import.meta.env.VITE_SERVER_URL
     const { address, isConnected } = useWeb3ModalAccount()
     const { fetchUser } = useUser()
     console.log("userNfts: ", userNfts)
@@ -22,7 +22,7 @@ function MyMusic() {
                 for (let i = 0; i < nftAddresses.length; i++) {
                     const nftAddress = nftAddresses[i]
                     const response = await axios.post(
-                        "http://localhost:3000/nft/getOne",
+                        `${serverUrl}/nft/getOne`,
                         { nftAddress },
                     )
                     const nftData = response.data.nfts[0]
