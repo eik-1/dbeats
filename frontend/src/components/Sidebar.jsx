@@ -2,7 +2,7 @@ import React from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Home, Music, Compass, User, Plus } from "lucide-react"
 import { useWeb3ModalAccount } from "@web3modal/ethers/react"
-
+import logo from "../images/logo.png"
 import styles from "./Sidebar.module.css"
 import { useUser } from "../contexts/UserProvider"
 
@@ -18,7 +18,7 @@ function Sidebar() {
     return (
         <div className={styles.sidebar}>
             <div className={styles.logo}>
-                <span>Dbeats</span>
+                <img src={logo} alt="logo" />
             </div>
             <nav className={styles.navigation}>
                 <SidebarItem
